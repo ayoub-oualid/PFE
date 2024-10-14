@@ -1,11 +1,16 @@
 import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
-dotenv.config();
 import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import loggingMiddleware from './middleware/loggingMiddleware.js';
 import userRoutes from './routes/userRoutes.js';
+import collaboratorRoutes from './routes/collaboratorRoutes.js';
+import lineRoutes from './routes/lineRoutes.js';
+import inspectionRoutes from './routes/inspectionRoutes.js';
+import reportRoutes from './routes/reportRoutes.js';
+dotenv.config();
 
 const port = process.env.PORT || 5000;
 
@@ -15,11 +20,19 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cookieParser());
 
-app.use('/api/users', userRoutes);
+// Apply logging middleware to all routes
+app.use(loggingMiddleware);
 
+// Apply routes
+app.use('/api/users', userRoutes);
+app.use('/api/collaborators', collaboratorRoutes);
+app.use('/api/lines', lineRoutes);
+app.use('/api/inspections', inspectionRoutes);
+app.use('/api/reports', reportRoutes);
+
+// Serve frontend
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, '/frontend/dist')));
@@ -33,6 +46,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+// Error Handling middlewares
 app.use(notFound);
 app.use(errorHandler);
 

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
@@ -37,7 +36,6 @@ const ProfileScreen = () => {
           email,
           password,
         }).unwrap();
-        console.log(res);
         dispatch(setCredentials(res));
         toast.success('Profile updated successfully');
       } catch (err) {
@@ -45,6 +43,7 @@ const ProfileScreen = () => {
       }
     }
   };
+
   return (
     <FormContainer>
       <h1>Update Profile</h1>
@@ -87,6 +86,18 @@ const ProfileScreen = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
+
+        {userInfo.role === 'admin' && (
+          <Form.Group className='my-2' controlId='role'>
+            <Form.Label>Role</Form.Label>
+            <Form.Control
+              type='text'
+              value={userInfo.role}
+              disabled
+            ></Form.Control>
+          </Form.Group>
+        )}
+
 
         <Button type='submit' variant='primary' className='mt-3'>
           Update
