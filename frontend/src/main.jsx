@@ -16,6 +16,13 @@ import LoginScreen from './screens/LoginScreen.jsx';
 import RegisterScreen from './screens/RegisterScreen.jsx';
 import ProfileScreen from './screens/ProfileScreen.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
+import AdminRoute from './components/AdminRoute.jsx';
+import Dashboard from './screens/Dashboard.jsx';
+import UsersScreen from './screens/UsersScreen.jsx';
+import CollaboratorsScreen from './screens/CollaboratorsScreen.jsx';
+import InspectorDashboard from './screens/InspectorDashboard.jsx';
+import CollaboratorsByInspectorScreen from './screens/CollaboratorsByInspectorScreen.jsx';
+import LinesScreen from './screens/LinesScreen.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,8 +31,18 @@ const router = createBrowserRouter(
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='' element={<PrivateRoute />}>
+        <Route path='/home' element={<InspectorDashboard />} />
         <Route path='/profile' element={<ProfileScreen />} />
+        <Route path='/mycollaborators' element={<CollaboratorsByInspectorScreen />} />
+        
       </Route>
+      <Route path='' element={<AdminRoute />}>
+        <Route path='/admin' element={<Dashboard />} />
+        <Route path='/users' element={<UsersScreen />} />
+        <Route path='/collaborators' element={<CollaboratorsScreen />} />
+        <Route path='/lines' element={<LinesScreen />} />
+      </Route>
+      
     </Route>
   )
 );

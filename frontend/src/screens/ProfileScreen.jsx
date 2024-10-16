@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { TextField, Button, Box, Typography, Container } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import FormContainer from '../components/FormContainer';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { useUpdateUserMutation } from '../slices/usersApiSlice';
@@ -27,7 +26,7 @@ const ProfileScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error('Les mots de passe ne correspondent pas');
     } else {
       try {
         const res = await updateProfile({
@@ -37,7 +36,7 @@ const ProfileScreen = () => {
           password,
         }).unwrap();
         dispatch(setCredentials(res));
-        toast.success('Profile updated successfully');
+        toast.success('Profil mis à jour avec succès');
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
@@ -45,67 +44,89 @@ const ProfileScreen = () => {
   };
 
   return (
-    <FormContainer>
-      <h1>Update Profile</h1>
-
-      <Form onSubmit={submitHandler}>
-        <Form.Group className='my-2' controlId='name'>
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type='name'
-            placeholder='Enter name'
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Mettre à jour le profil
+        </Typography>
+        <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="Nom"
+            name="name"
+            autoComplete="name"
+            autoFocus
             value={name}
             onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group className='my-2' controlId='email'>
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type='email'
-            placeholder='Enter email'
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Adresse e-mail"
+            name="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group className='my-2' controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Enter password'
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Mot de passe"
+            type="password"
+            id="password"
+            autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group className='my-2' controlId='confirmPassword'>
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Confirm password'
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Confirmer le mot de passe"
+            type="password"
+            id="confirmPassword"
+            autoComplete="new-password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        {userInfo.role === 'admin' && (
-          <Form.Group className='my-2' controlId='role'>
-            <Form.Label>Role</Form.Label>
-            <Form.Control
-              type='text'
+          />
+          {userInfo.role === 'admin' && (
+            <TextField
+              margin="normal"
+              fullWidth
+              name="role"
+              label="Rôle"
+              id="role"
               value={userInfo.role}
               disabled
-            ></Form.Control>
-          </Form.Group>
-        )}
-
-
-        <Button type='submit' variant='primary' className='mt-3'>
-          Update
-        </Button>
-
-        {isLoading && <Loader />}
-      </Form>
-    </FormContainer>
+            />
+          )}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Mettre à jour
+          </Button>
+          {isLoading && <Loader />}
+        </Box>
+      </Box>
+    </Container>
   );
 };
 

@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
-import FormContainer from '../components/FormContainer';
+import { TextField, Button, Box, Typography, Container, Grid, Link as MuiLink } from '@mui/material';
 import Loader from '../components/Loader';
-// import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRegisterMutation } from '../slices/usersApiSlice';
@@ -43,62 +41,87 @@ const RegisterScreen = () => {
       }
     }
   };
+
   return (
-    <FormContainer>
-      <h1>Register</h1>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className='my-2' controlId='name'>
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type='name'
-            placeholder='Enter name'
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Register
+        </Typography>
+        <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="Name"
+            name="name"
+            autoComplete="name"
+            autoFocus
             value={name}
             onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group className='my-2' controlId='email'>
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type='email'
-            placeholder='Enter email'
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group className='my-2' controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Enter password'
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group className='my-2' controlId='confirmPassword'>
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Confirm password'
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            id="confirmPassword"
+            autoComplete="new-password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Button type='submit' variant='primary' className='mt-3'>
-          Register
-        </Button>
-
-        {isLoading && <Loader />}
-      </Form>
-
-      <Row className='py-3'>
-        <Col>
-          Already have an account? <Link to={`/login`}>Login</Link>
-        </Col>
-      </Row>
-    </FormContainer>
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Register
+          </Button>
+          {isLoading && <Loader />}
+        </Box>
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            <MuiLink component={Link} to="/login" variant="body2">
+              Already have an account? Login
+            </MuiLink>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 };
 

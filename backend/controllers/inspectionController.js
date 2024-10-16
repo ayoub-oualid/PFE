@@ -61,6 +61,7 @@ const updateInspection = asyncHandler(async (req, res) => {
     inspection.status = req.body.status || inspection.status;
     inspection.plannedDateTime = req.body.plannedDateTime || inspection.plannedDateTime;
     inspection.rating = req.body.rating || inspection.rating;
+    inspection.report = req.body.report || inspection.report;
 
     const updatedInspection = await inspection.save();
     res.json(updatedInspection);
@@ -84,6 +85,47 @@ const deleteInspection = asyncHandler(async (req, res) => {
     throw new Error('Inspection not found');
   }
 });
+// @desk    Get inspections by inspector
+// @route   GET /api/inspections/inspector?inspectorId=:id
+// @access  Private/Inspector
+const getInspectionsByInspector = async (req, res) => {
+  const { inspectorId } = req.query;
+
+
+  try {
+    const inspections = await Inspection.find({ inspector: inspectorId })
+      .populate('inspector', 'name email')
+      .populate('collaborator', 'fullName employeeId')
+      .populate('line', 'trainNumber');
+
+    res.status(200).json(inspections);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching inspections', error });
+  }
+};
+
+// @desc    Get inspections by collaborator
+// @route   GET /api/inspections/collaborator?collaboratorId=:id
+// @access  Private/Collaborator
+const getInspectionsByCollaborator = asyncHandler(async (req, res) => {
+  const inspections = await Inspection.find({ collaborator : req.query.collaboratorId })
+    .populate('inspector', 'name email')
+    .populate('collaborator', 'fullName employeeId')
+    .populate('line', 'trainNumber');
+  res.json(inspections);
+});
+
+// @desc    Get inspections by status
+// @route   GET /api/inspections/status?status=:status
+// @access  Private/Admin
+const getInspectionsByStatus = asyncHandler(async (req, res) => {
+  const inspections = await Inspection.find({ status: req.query.status })
+    .populate('inspector', 'name email')
+    .populate('collaborator', 'fullName employeeId')
+    .populate('line', 'trainNumber');
+  res.json(inspections);
+});
+
 
 export {
   createInspection,
@@ -91,4 +133,7 @@ export {
   getInspectionById,
   updateInspection,
   deleteInspection,
+  getInspectionsByInspector,
+  getInspectionsByCollaborator,
+  getInspectionsByStatus,
 };

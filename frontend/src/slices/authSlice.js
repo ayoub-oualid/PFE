@@ -31,5 +31,5 @@ export const { setCredentials, logout, updateUserRole } = authSlice.actions;
 
 export default authSlice.reducer;
 
-// Selector to get user role
+
 export const selectUserRole = (state) => state.auth.userInfo?.role;

@@ -1,27 +1,24 @@
-import { Container, Card, Button } from 'react-bootstrap';
+import { Container, Card, Button, Typography, Box } from '@mui/material';
 
 const Hero = () => {
   return (
-    <div className=' py-5'>
-      <Container className='d-flex justify-content-center'>
-        <Card className='p-5 d-flex flex-column align-items-center hero-card bg-light w-75'>
-          <h1 className='text-center mb-4'>MERN Authentication</h1>
-          <p className='text-center mb-4'>
-            This is a boilerplate for MERN authentication that stores a JWT in
-            an HTTP-Only cookie. It also uses Redux Toolkit and the React
-            Bootstrap library
-          </p>
-          <div className='d-flex'>
-            <Button variant='primary' href='/login' className='me-3'>
-              Sign In
+    <Box py={5}>
+      <Container maxWidth="md">
+        <Card sx={{ p: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: 'grey.100' }}>
+          <Typography variant="h4" component="h1" gutterBottom align="center">
+            ONCF Inspection
+          </Typography>
+          <Typography variant="body1" paragraph align="center">
+          Bienvenue sur la plateforme d'inspection ONCF, une application interne réservée aux employés de l'ONCF. Accédez à un espace sécurisé pour planifier et suivre les inspections ferroviaires, ainsi que gérer les rapports. Connectez-vous pour commencer.
+          </Typography>
+          <Box>
+            <Button variant="contained" color="primary" href="/login" sx={{ mr: 2 }}>
+              Connecter
             </Button>
-            <Button variant='secondary' href='/register'>
-              Register
-            </Button>
-          </div>
+          </Box>
         </Card>
       </Container>
-    </div>
+    </Box>
   );
 };
 

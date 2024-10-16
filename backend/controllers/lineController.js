@@ -87,10 +87,36 @@ const deleteLine = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get lines by collaborator
+// @route   GET /api/lines/collaborator/:id
+// @access  Private
+const getLinesByCollaborator = asyncHandler(async (req, res) => {
+  const lines = await Line.find({ collaborators: req.params.id }).populate('collaborators', 'fullName employeeId');
+  res.json(lines);
+});
+
+// @desc    assign collaborator to line
+// @route   PUT /api/lines/:id/assign
+// @access  Private/Admin
+const assignCollaboratorToLine = asyncHandler(async (req, res) => {
+  const line = await Line.findById(req.params.id);
+
+  if (line) {
+    line.collaborators.push(req.body.collaboratorId);
+    const updatedLine = await line.save();
+    res.json(updatedLine);
+  } else {
+    res.status(404);
+    throw new Error('Line not found');
+  }
+});
+
 export {
   createLine,
   getLines,
   getLineById,
   updateLine,
   deleteLine,
+  getLinesByCollaborator,
+  assignCollaboratorToLine,
 };

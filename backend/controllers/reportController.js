@@ -96,7 +96,7 @@ const deleteReport = asyncHandler(async (req, res) => {
     if (report) {
       const inspection = await Inspection.findById(report.inspection);
       if (inspection) {
-        inspection.status = 'done'; // Reset inspection status
+        inspection.status = 'waiting_for_report'; // Reset inspection status
         await inspection.save();
       }
   
@@ -127,6 +127,47 @@ const getReportsByInspector = asyncHandler(async (req, res) => {
   res.json(inspectorReports);
 });
 
+// @desc    Get reports by collaborator
+// @route   GET /api/reports/collaborator
+// @access  Private/Collaborator
+const getReportsByCollaborator = asyncHandler(async (req, res) => {
+  const reports = await Report.find({}).populate({
+    path: 'inspection',
+    match: { collaborator: req.user._id },
+    populate: [
+      { path: 'inspector', select: 'name email' },
+      { path: 'line', select: 'trainNumber' }
+    ]
+  });
+});
+
+// @desc    Get reports by inspection
+// @route   GET /api/reports/inspection
+// @access  Private/Inspector
+const getReportsByInspection = asyncHandler(async (req, res) => {
+  const { inspectionId } = req.query;
+
+  if (!inspectionId) {
+    res.status(400);
+    throw new Error('Inspection ID is required');
+  }
+
+  const reports = await Report.find({ inspection: inspectionId }).populate({
+    path: 'inspection',
+    populate: [
+      { path: 'inspector', select: 'name email' },
+      { path: 'collaborator', select: 'fullName employeeId' },
+      { path: 'line', select: 'trainNumber' }
+    ]
+  });
+
+  if (!reports) {
+    res.status(404);
+    throw new Error('Reports not found');
+  }
+
+  res.json(reports);
+});
 export {
   createReport,
   getReports,
@@ -134,4 +175,6 @@ export {
   updateReport,
   deleteReport,
   getReportsByInspector,
+  getReportsByCollaborator,
+  getReportsByInspection
 };

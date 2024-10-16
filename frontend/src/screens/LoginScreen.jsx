@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
-import FormContainer from '../components/FormContainer';
+import { TextField, Button, Grid, Typography, Container, Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
@@ -21,12 +20,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      // Redirect based on user role
-      if (userInfo.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/');
-      }
+      navigate(userInfo.role === 'admin' ? '/admin' : '/home');
     }
   }, [navigate, userInfo]);
 
@@ -35,60 +29,63 @@ const LoginScreen = () => {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
-      // Redirect based on user role
-      if (res.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/');
-      }
+      navigate(res.role === 'admin' ? '/admin' : '/');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
   };
 
   return (
-    <FormContainer>
-      <h1>Sign In</h1>
-
-      <Form onSubmit={submitHandler}>
-        <Form.Group className='my-2' controlId='email'>
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type='email'
-            placeholder='Enter email'
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Sign In
+        </Typography>
+        <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            autoComplete="email"
+            autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group className='my-2' controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Enter password'
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Mot de passe"
+            type="password"
+            id="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Button
-          disabled={isLoading}
-          type='submit'
-          variant='primary'
-          className='mt-3'
-        >
-          Sign In
-        </Button>
-      </Form>
-
-      {isLoading && <Loader />}
-
-      <Row className='py-3'>
-        <Col>
-          New Customer? <Link to='/register'>Register</Link>
-        </Col>
-      </Row>
-    </FormContainer>
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={isLoading}
+          >
+            Connecter
+          </Button>
+          {isLoading && <Loader />}
+        </Box>
+      </Box>
+    </Container>
   );
 };
 

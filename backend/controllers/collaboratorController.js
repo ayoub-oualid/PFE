@@ -88,10 +88,65 @@ const deleteCollaborator = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Assign collaborator to inspector
+// @route   PUT /api/collaborators/:id/assign
+// @access  Private/Admin
+const assignCollaborator = asyncHandler(async (req, res) => {
+  const collaborator = await Collaborator.findById(req.params.id);
+
+  if (collaborator) {
+    collaborator.assignedInspector = req.body.assignedInspector || collaborator.assignedInspector;
+
+    const updatedCollaborator = await collaborator.save();
+    res.json(updatedCollaborator);
+  } else {
+    res.status(404);
+    throw new Error('Collaborator not found');
+  }
+});
+
+// @desc    Unassign collaborator from inspector
+// @route   PUT /api/collaborators/:id/unassign
+// @access  Private/Admin
+const unassignCollaborator = asyncHandler(async (req, res) => {
+  const collaborator = await Collaborator.findById(req.params.id);
+
+  if (collaborator) {
+    collaborator.assignedInspector = null;
+
+    const updatedCollaborator = await collaborator.save();
+    res.json(updatedCollaborator);
+  } else {
+    res.status(404);
+    throw new Error('Collaborator not found');
+  }
+});
+
+// @desc    Get all collaborators assigned to inspector
+// @route   GET /api/collaborators/inspector/:id
+// @access  Private/Admin
+const getCollaboratorsByInspector = asyncHandler(async (req, res) => {
+  const collaborators = await Collaborator.find({ 'assignedInspector._Id': req.params.id });
+  res.json(collaborators);
+});
+
+// @desc    Get all collaborators not assigned to any inspector
+// @route   GET /api/collaborators/unassigned
+// @access  Private/Admin
+const getUnassignedCollaborators = asyncHandler(async (req, res) => {
+  const collaborators = await Collaborator.find({ assignedInspector: null });
+  res.json(collaborators);
+});
+
+
 export {
   createCollaborator,
   getCollaborators,
   getCollaboratorById,
   updateCollaborator,
   deleteCollaborator,
+  assignCollaborator,
+  unassignCollaborator,
+  getCollaboratorsByInspector,
+  getUnassignedCollaborators,
 };
