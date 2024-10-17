@@ -10,6 +10,7 @@ import collaboratorRoutes from './routes/collaboratorRoutes.js';
 import lineRoutes from './routes/lineRoutes.js';
 import inspectionRoutes from './routes/inspectionRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
+import cors from 'cors';
 dotenv.config();
 
 const port = process.env.PORT || 5000;
@@ -21,6 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors());
 
 // Apply logging middleware to all routes
 app.use(loggingMiddleware);
