@@ -36,6 +36,9 @@ app.use('/api/reports', reportRoutes);
 
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
+  app.use(cors({
+    origin: 'https://pfe-front-hnq0.onrender.com' // Replace with your frontend URL
+  }));
   const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, '/frontend/dist')));
 
