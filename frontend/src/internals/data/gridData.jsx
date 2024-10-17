@@ -3,17 +3,18 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import { useEffect, useState } from 'react';
-
+import { Box, IconButton, Typography, Collapse, List, ListItem, ListItemText } from '@mui/material';
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 import { useGetAllUsersQuery } from "../../slices/usersApiSlice";
-import { useLazyGetCollaboratorsByInspectorQuery,} from "../../slices/collaboratorsApiSlice";
-import { useLazyGetInspectionsByInspectorQuery,} from "../../slices/inspectionsApiSlice";
+import { useLazyGetCollaboratorsByInspectorQuery, } from "../../slices/collaboratorsApiSlice";
+import { useLazyGetInspectionsByInspectorQuery, } from "../../slices/inspectionsApiSlice";
 import { useGetCollaboratorsQuery } from "../../slices/collaboratorsApiSlice";
 import { useGetLinesQuery } from "../../slices/linesApiSlice";
 import { useGetReportsQuery } from "../../slices/reportsApiSlice";
 import { useLazyGetReportsByInspectionQuery } from "../../slices/reportsApiSlice";
 import { useLazyGetInspectionsByCollaboratorQuery } from "../../slices/inspectionsApiSlice";
 import { useGetCollaboratorsByInspectorQuery } from "../../slices/collaboratorsApiSlice";
+
 
 
 function getDaysInMonth(month, year) {
@@ -142,11 +143,11 @@ export const useTableRows = () => {
 
   const userRows = useMemo(() => {
     if (!usersData) return [];
-    
+
     return usersData.map((user) => {
       const userInspections = inspectionsData[user._id] || [];
       const userCollaborators = collaboratorsData[user._id] || [];
-      
+
       return {
         id: user._id,
         name: user.name,
@@ -217,13 +218,22 @@ export const lineColumns = [
   { field: 'dateTime', headerName: 'Date Time', flex: 1, minWidth: 120 },
   { field: 'firstStop', headerName: 'First Stop', flex: 1, minWidth: 120 },
   { field: 'lastStop', headerName: 'Last Stop', flex: 1, minWidth: 120 },
-  {
+  /* {
     field: 'collaborators',
     headerName: 'Collaborators',
     flex: 1.5,
     minWidth: 150,
-    renderCell: (params) => params.value.map(collaborator => collaborator.fullName).join(', '),
-  },
+    renderCell: (params) => (
+      <Box>
+        <List dense>
+          {params.value.map((collaborator, index) => (
+            <ListItem key={index}>
+              <ListItemText primary={collaborator.fullName} />
+            </ListItem>
+          ))}
+        </List>
+      </Box>)
+  }, */
 ];
 
 export const useLineTableRows = () => {
@@ -331,11 +341,11 @@ export const useInspectionTableRow = () => {
 
   const userRows = useMemo(() => {
     if (!usersData) return [];
-    
+
     return usersData.map((user) => {
       const userInspections = inspectionsData[user._id] || [];
       const userCollaborators = collaboratorsData[user._id] || [];
-      
+
       return {
         id: user._id,
         name: user.name,
@@ -381,7 +391,7 @@ export const useUsersTableRows = () => {
 
   const userRows = useMemo(() => {
     if (!usersData) return [];
-    
+
     return usersData.map((user) => ({
       id: user._id,
       name: user.name,

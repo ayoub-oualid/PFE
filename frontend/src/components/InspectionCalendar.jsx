@@ -6,6 +6,7 @@ import { useGetInspectionsByInspectorQuery } from '../slices/inspectionsApiSlice
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { ThemeProvider } from '@mui/material';
 import theme from '../theme';
+import { useNavigate } from 'react-router-dom';
 
 const InspectionCalendar = () => {
   const localizer = momentLocalizer(moment);
@@ -13,14 +14,20 @@ const InspectionCalendar = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const userId = userInfo?._id;
   const { data: inspections, isLoading, error } = useGetInspectionsByInspectorQuery(userId);
+  const Navigate = useNavigate();
+
+  const handleEventClick = (event) => {
+    Navigate(`/details/inspection/${event.id}`);
+  };
 
   const events = useMemo(() => {
     if (!inspections) return [];
     return inspections.map((inspection) => ({
+      id: inspection._id,
       title: `${inspection.collaborator?.fullName}`,
       start: new Date(inspection.plannedDateTime),
       end: new Date(inspection.plannedDateTime),
-      status: inspection.status // Add this line to include the status
+      status: inspection.status 
     }));
   }, [inspections]);
 
@@ -71,6 +78,7 @@ const InspectionCalendar = () => {
         endAccessor="end"
         style={{ height: 800, width: 900, margin: 20, lineHeight: 2 }}
         eventPropGetter={eventStyleGetter}
+        onSelectEvent={handleEventClick}
       />
     </ThemeProvider>
   );

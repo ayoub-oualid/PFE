@@ -6,14 +6,23 @@ import {
 import {
   Button,
   Dialog,
+  DialogTitle,
+  DialogContent,
   IconButton,
   Typography,
   Box,
+  Tooltip
 } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import { useCollaboratorTableRows, collaboratorColumns } from '../internals/data/gridData';
 import { useCreateCollaboratorMutation, useUpdateCollaboratorMutation } from '../slices/collaboratorsApiSlice';
 import CollaboratorManagementForm from './CollaboratorManagementForm';
+import { 
+  Add as AddIcon, 
+  Edit as EditIcon,
+  PersonOutline as PersonIcon,
+  Warning as WarningIcon
+} from '@mui/icons-material';
 
 function CollaboratorManagement() {
   const { collaboratorRows, isLoading, isError } = useCollaboratorTableRows();
@@ -22,25 +31,37 @@ function CollaboratorManagement() {
   const [openModal, setOpenModal] = useState(false);
   const [modalMode, setModalMode] = useState('create');
   const [currentCollaborator, setCurrentCollaborator] = useState(null);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
 
   const handleOpenModal = (mode, collaborator = null) => {
     setModalMode(mode);
     setCurrentCollaborator(collaborator);
+    setError('');
     setOpenModal(true);
+  };
+  const navigateToDetails = (collaboratorId) => {
+    navigate(`/details/collaborator/${collaboratorId}`);
   };
 
   const handleCloseModal = () => {
     setOpenModal(false);
     setCurrentCollaborator(null);
+    setError('');
   };
 
   const handleSubmit = async (collaboratorData) => {
-    if (modalMode === 'create') {
-      await createCollaborator(collaboratorData);
-    } else {
-      await updateCollaborator({ id: currentCollaborator.id, ...collaboratorData });
+    try {
+      if (modalMode === 'create') {
+        await createCollaborator(collaboratorData).unwrap();
+      } else {
+        await updateCollaborator({ id: currentCollaborator.id, ...collaboratorData }).unwrap();
+      }
+      handleCloseModal();
+    } catch (err) {
+      setError('An error occurred while saving');
     }
-    handleCloseModal();
   };
 
   const actionColumn = {
@@ -48,36 +69,83 @@ function CollaboratorManagement() {
     headerName: 'Actions',
     width: 120,
     renderCell: (params) => (
-      <Box>
-        <IconButton onClick={() => handleOpenModal('edit', params.row)}>
-          <EditIcon />
-        </IconButton>
+      <Box display="flex" gap={1}>
+        <Tooltip title="Edit Collaborator">
+          <IconButton 
+            size="small" 
+            color="primary" 
+            onClick={() => handleOpenModal('edit', params.row)}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="View Details">
+          <IconButton 
+            size="small" 
+            color="secondary" 
+            onClick={(e) => {
+              e.stopPropagation();
+              navigateToDetails(params.row.id);
+
+            }}
+          >
+            <PersonIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
     ),
   };
 
   const enhancedColumns = [...collaboratorColumns, actionColumn];
 
-  if (isLoading) return <Typography>Loading...</Typography>;
-  if (isError) return <Typography>Error loading collaborators</Typography>;
+  if (isLoading) return (
+    <Box display="flex" justifyContent="center" alignItems="center" height="400px">
+      <Typography>Loading collaborators...</Typography>
+    </Box>
+  );
+
+  if (isError) return (
+    <Box display="flex" justifyContent="center" alignItems="center" height="400px" gap={2}>
+      <WarningIcon color="error" />
+      <Typography color="error">Error loading collaborators</Typography>
+    </Box>
+  );
 
   return (
-    <Box sx={{ height: '80%', width: '100%' }}>
-      <Button
-        startIcon={<AddIcon />}
-        onClick={() => handleOpenModal('create')}
-        sx={{ mb: 2 }}
-      >
-        Add Collaborator
-      </Button>
+    <Box sx={{ height: '80vh', width: '100%', p: 2 }}>
+      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h5" component="h1">
+          Collaborator Management
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={() => handleOpenModal('create')}
+        >
+          Add Collaborator
+        </Button>
+      </Box>
+      
       <DataGrid
         rows={collaboratorRows}
         columns={enhancedColumns}
         getRowId={(row) => row.id || `${row.email}`}
-        checkboxSelection
-        components={{ Toolbar: GridToolbar }}
+        components={{ 
+          Toolbar: GridToolbar,
+          NoRowsOverlay: () => (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+              <Typography>No collaborators found</Typography>
+            </Box>
+          ),
+        }}
         componentsProps={{
-          toolbar: { showQuickFilter: true },
+          toolbar: { 
+            showQuickFilter: true,
+            quickFilterProps: { debounceMs: 500 },
+            printOptions: { disableToolbarButton: true },
+            csvOptions: { disableToolbarButton: true },
+          },
         }}
         initialState={{
           pagination: { paginationModel: { pageSize: 20 } },
@@ -85,22 +153,41 @@ function CollaboratorManagement() {
         pageSizeOptions={[10, 20, 50]}
         disableColumnResize
         density="compact"
+        autoHeight
+        sx={{
+          '& .MuiDataGrid-row': {
+            cursor: 'pointer',
+          },
+          '& .MuiDataGrid-row:hover': {
+            backgroundColor: 'action.hover',
+          },
+        }}
       />
+
       <CollaboratorFormDialog
         open={openModal}
         onClose={handleCloseModal}
         mode={modalMode}
         collaborator={currentCollaborator}
         onSubmit={handleSubmit}
+        error={error}
       />
     </Box>
   );
 }
 
-function CollaboratorFormDialog({ open, onClose, mode, collaborator, onSubmit }) {
+function CollaboratorFormDialog({ open, onClose, mode, collaborator, onSubmit, error }) {
   return (
-    <Dialog open={open} onClose={onClose}>
-      <CollaboratorManagementForm mode={mode} collaborator={collaborator} onSubmit={onSubmit} onClose={onClose}/>
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>{mode === 'create' ? 'Add New Collaborator' : 'Edit Collaborator'}</DialogTitle>
+      <DialogContent dividers>
+        {error && (
+          <Typography color="error" sx={{ mb: 2 }}>
+            {error}
+          </Typography>
+        )}
+         <CollaboratorManagementForm mode={mode} collaborator={collaborator} onSubmit={onSubmit} onClose={onClose}/>
+      </DialogContent>
     </Dialog>
   );
 }

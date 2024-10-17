@@ -11,6 +11,12 @@ export const reportsApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getReport: builder.query({
+      query: (id) => ({
+        url: `${REPORTS_URL}/${id}`,
+        method: 'GET',
+      }),
+    }),
     createReport: builder.mutation({
       query: (data) => ({
         url: REPORTS_URL,
@@ -54,6 +60,7 @@ export const reportsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetReportsQuery,
+  useGetReportQuery,
   useCreateReportMutation,
   useUpdateReportMutation,
   useDeleteReportMutation,

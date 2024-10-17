@@ -36,15 +36,13 @@ const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit, }) 
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h5">
-          {mode === 'create' ? 'Create Collaborator' : 'Update Collaborator'}
-        </Typography>
+
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"

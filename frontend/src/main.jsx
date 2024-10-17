@@ -23,6 +23,7 @@ import CollaboratorsScreen from './screens/CollaboratorsScreen.jsx';
 import InspectorDashboard from './screens/InspectorDashboard.jsx';
 import CollaboratorsByInspectorScreen from './screens/CollaboratorsByInspectorScreen.jsx';
 import LinesScreen from './screens/LinesScreen.jsx';
+import ProfileWrapper from './screens/ProfileWrapper.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,8 @@ const router = createBrowserRouter(
         <Route path='/home' element={<InspectorDashboard />} />
         <Route path='/profile' element={<ProfileScreen />} />
         <Route path='/mycollaborators' element={<CollaboratorsByInspectorScreen />} />
+        <Route path="/details/:type/:id" element={<ProfileWrapper />} />
+
         
       </Route>
       <Route path='' element={<AdminRoute />}>
@@ -41,6 +44,7 @@ const router = createBrowserRouter(
         <Route path='/users' element={<UsersScreen />} />
         <Route path='/collaborators' element={<CollaboratorsScreen />} />
         <Route path='/lines' element={<LinesScreen />} />
+        <Route path="/details/:type/:id" element={<ProfileWrapper />} />
       </Route>
       
     </Route>

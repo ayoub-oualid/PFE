@@ -6,25 +6,26 @@ import {
 import { 
   Button, 
   Dialog, 
-  DialogTitle, 
-  DialogContent, 
-  DialogActions, 
-  TextField,
-  MenuItem,
-  IconButton,
+  IconButton, 
+  Box, 
   Typography,
-  Box,
+  Tooltip
 } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { 
+  Add as AddIcon, 
+  Edit as EditIcon, 
+  Person as PersonIcon,
+} from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import { useUsersTableRows, usersColumns } from '../internals/data/gridData';
-import { useRegisterMutation,useUpdateUserMutation } from '../slices/usersApiSlice';
+import { useRegisterMutation, useUpdateUserMutation } from '../slices/usersApiSlice';
 import UserManagementForm from './UserManagementForm';
 
 function UserManagement() {
+  const navigate = useNavigate();
   const { userRows, isLoading, isError } = useUsersTableRows();
   const [createUser] = useRegisterMutation();
   const [updateUser] = useUpdateUserMutation();
-
 
   const [openModal, setOpenModal] = useState(false);
   const [modalMode, setModalMode] = useState('create');
@@ -41,6 +42,10 @@ function UserManagement() {
     setCurrentUser(null);
   };
 
+  const navigateToDetails = (userId) => {
+    navigate(`/details/user/${userId}`);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -55,16 +60,34 @@ function UserManagement() {
     handleCloseModal();
   };
 
-
   const actionColumn = {
     field: 'actions',
     headerName: 'Actions',
-    width: 120,
+    width: 150,
     renderCell: (params) => (
-      <Box>
-        <IconButton onClick={() => handleOpenModal('edit', params.row)}>
-          <EditIcon />
-        </IconButton>
+<Box display="flex" gap={1}>
+        <Tooltip title="Edit Collaborator">
+          <IconButton 
+            size="small" 
+            color="primary" 
+            onClick={() => handleOpenModal('edit', params.row)}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="View Details">
+          <IconButton 
+            size="small" 
+            color="secondary" 
+            onClick={(e) => {
+              e.stopPropagation();
+              navigateToDetails(params.row.id);
+
+            }}
+          >
+            <PersonIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
     ),
   };
@@ -75,22 +98,40 @@ function UserManagement() {
   if (isError) return <Typography>Error loading users</Typography>;
 
   return (
-    <Box sx={{ height: '80%', width: '100%' }}>
-      <Button
-        startIcon={<AddIcon />}
-        onClick={() => handleOpenModal('create')}
-        sx={{ mb: 2 }}
-      >
-        Add User
-      </Button>
+    <Box sx={{ height: '80%', width: '100%', mt: 2, mb: 2, p: 2 }}>
+      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h5" component="h1">
+          User Management
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={() => handleOpenModal('create')}
+        >
+          Add User
+        </Button>
+      </Box>
+      
       <DataGrid
         rows={userRows}
         columns={enhancedColumns}
         getRowId={(row) => row.id || `${row.email}`}
-        checkboxSelection
-        components={{ Toolbar: GridToolbar }}
+        components={{ 
+          Toolbar: GridToolbar,
+          NoRowsOverlay: () => (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+              <Typography>No users found</Typography>
+            </Box>
+          ),
+        }}
         componentsProps={{
-          toolbar: { showQuickFilter: true },
+          toolbar: { 
+            showQuickFilter: true,
+            quickFilterProps: { debounceMs: 500 },
+            printOptions: { disableToolbarButton: true },
+            csvOptions: { disableToolbarButton: true },
+          },
         }}
         initialState={{
           pagination: { paginationModel: { pageSize: 20 } },
@@ -98,6 +139,15 @@ function UserManagement() {
         pageSizeOptions={[10, 20, 50]}
         disableColumnResize
         density="compact"
+        autoHeight
+        sx={{
+          '& .MuiDataGrid-row': {
+            cursor: 'pointer',
+          },
+          '& .MuiDataGrid-row:hover': {
+            backgroundColor: 'action.hover',
+          },
+        }}
       />
       <UserFormDialog
         open={openModal}
@@ -113,7 +163,7 @@ function UserManagement() {
 function UserFormDialog({ open, onClose, mode, user, onSubmit }) {
   return (
     <Dialog open={open} onClose={onClose}>
-      <UserManagementForm mode={mode} user={user} onSubmit={onSubmit} onClose={onClose}/>
+      <UserManagementForm mode={mode} user={user} onSubmit={onSubmit} onClose={onClose} />
     </Dialog>
   );
 }

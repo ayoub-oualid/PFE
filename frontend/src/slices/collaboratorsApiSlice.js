@@ -1,4 +1,5 @@
 // collaboratorsApiSlice.js
+import { get } from 'mongoose';
 import { apiSlice } from './apiSlice';
 const COLLABORATORS_URL = '/api/collaborators';
 
@@ -14,7 +15,9 @@ export const collaboratorsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    
+    getCollaborator: builder.query({
+      query: (id) => ({ url: `${COLLABORATORS_URL}/${id}` }),
+    }),
     assignCollaborator: builder.mutation({
       query: (data) => ({
         url: `${COLLABORATORS_URL}/assign`,
@@ -60,6 +63,7 @@ export const collaboratorsApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetCollaboratorsQuery,
   useCreateCollaboratorMutation,
+  useGetCollaboratorQuery,
   useUpdateCollaboratorMutation,
   useDeleteCollaboratorMutation,
   useAssignCollaboratorMutation,

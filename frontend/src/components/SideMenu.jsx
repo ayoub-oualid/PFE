@@ -51,7 +51,7 @@ export default function SideMenu() {
       >
         <Box
           component="img"
-          src="../public/ONCf.svg"
+          src="../src/assets/ONCf.svg"
           alt="logo"
           sx={{
           display: 'flex',

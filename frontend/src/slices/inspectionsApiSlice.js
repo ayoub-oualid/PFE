@@ -12,6 +12,12 @@ export const inspectionsApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getInspection: builder.query({
+      query: (id) => ({
+        url: `${INSPECTIONS_URL}/${id}`,
+        method: 'GET',
+      }),
+    }),
     createInspection: builder.mutation({
       query: (data) => ({
         url: INSPECTIONS_URL,
@@ -56,6 +62,7 @@ export const inspectionsApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetInspectionsQuery,
   useCreateInspectionMutation,
+  useGetInspectionQuery,
   useUpdateInspectionMutation,
   useDeleteInspectionMutation,
     useGetInspectionsByInspectorQuery,
