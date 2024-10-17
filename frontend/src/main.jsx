@@ -24,7 +24,7 @@ import CollaboratorsByInspectorScreen from './screens/CollaboratorsByInspectorSc
 import LinesScreen from './screens/LinesScreen.jsx';
 import ProfileWrapper from './screens/ProfileWrapper.jsx';
 import ReportsScreen from './screens/ReportsScreen.jsx';
-import MyReportsScreen from './screens/myReportsScreen.jsx';
+import MyReportsScreen from './screens/MyReportsScreen.jsx';
 import RoleBasedRedirect from './components/RoleBasedRedirect.jsx';
 import HomeScreen from './screens/HomeScreen.jsx';
 
