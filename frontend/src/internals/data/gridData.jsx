@@ -14,6 +14,7 @@ import { useGetReportsQuery } from "../../slices/reportsApiSlice";
 import { useLazyGetReportsByInspectionQuery } from "../../slices/reportsApiSlice";
 import { useLazyGetInspectionsByCollaboratorQuery } from "../../slices/inspectionsApiSlice";
 import { useGetCollaboratorsByInspectorQuery } from "../../slices/collaboratorsApiSlice";
+import { useGetReportsByInspectorQuery } from "../../slices/reportsApiSlice";
 
 function getDaysInMonth(month, year) {
   const date = new Date(year, month, 0);
@@ -241,15 +242,47 @@ export const useLineTableRows = () => {
 };
 
 export const reportColumns = [
-  { field: 'inspection', headerName: 'Inspection', flex: 1, minWidth: 120 },
-  { field: 'field1', headerName: 'Champ 1', flex: 1, minWidth: 120 },
-  { field: 'field2', headerName: 'Champ 2', flex: 1, minWidth: 120 },
-  { field: 'field3', headerName: 'Champ 3', flex: 1, minWidth: 120 },
+  {
+    field: 'inspector',
+    headerName: 'Inspecteur',
+    flex: 1,
+    minWidth: 200,
+    valueGetter: (params) => params.row.inspection.inspector.name,
+  },
+  {
+    field: 'collaborator',
+    headerName: 'Collaborateur',
+    flex: 1,
+    minWidth: 200,
+    valueGetter: (params) => params.row.inspection.collaborator.fullName,
+  },
+  {
+    field: 'trainNumber',
+    headerName: 'Numéro du Train',
+    flex: 1,
+    minWidth: 150,
+    valueGetter: (params) => params.row.inspection.line.trainNumber,
+  },
+  {
+    field: 'date',
+    headerName: 'Date',
+    flex: 1,
+    minWidth: 150,
+    valueGetter: (params) => params.row.inspection.plannedDateTime,
+    valueFormatter: (params) => new Date(params.value).toLocaleDateString(),
+  },
+  {
+    field: 'rating',
+    headerName: 'Note moyenne',
+    flex: 1,
+    minWidth: 130,
+    valueGetter: (params) => params.row.inspection.rating,
+  },
 ];
 
-export const useReportTableRows = () => {
-  const { data: reportsData, isLoading: isLoadingReports, isError: isErrorReports } = useGetReportsQuery();
-
+export const useReportTableRows = ({inspectorId}) => {
+  const { data: reportsData, isLoading: isLoadingReports, isError: isErrorReports } = (inspectorId) ? useGetReportsByInspectorQuery(inspectorId) : useGetReportsQuery();
+  console.log('inspectorId rp tab row:', inspectorId);
   const reportRows = useMemo(() => {
     if (!reportsData) return [];
 
@@ -259,6 +292,18 @@ export const useReportTableRows = () => {
       field1: report.field1,
       field2: report.field2,
       field3: report.field3,
+      field4: report.field4,
+      field5: report.field5,
+      field6: report.field6,
+      field7: report.field7,
+      field8: report.field8,
+      field9: report.field9,
+      field10: report.field10,
+      field11: report.field11,
+      field12: report.field12,
+      field13: report.field13,
+      field14: report.field14,
+      field15: report.field15,
     }));
   }, [reportsData]);
 

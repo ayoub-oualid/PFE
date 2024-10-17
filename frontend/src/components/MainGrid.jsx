@@ -16,7 +16,9 @@ import { useGetInspectionsQuery, useGetInspectionsByStatusQuery, } from '../slic
 import { useGetCollaboratorsQuery, useGetUnassignedCollaboratorsQuery } from '../slices/collaboratorsApiSlice';
 import { useGetLinesQuery } from '../slices/linesApiSlice';
 import { useGetReportsQuery } from '../slices/reportsApiSlice';
-
+import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import HourglassBottomRoundedIcon from '@mui/icons-material/HourglassBottomRounded';
 
 
 export default function MainGrid() {
@@ -29,41 +31,70 @@ export default function MainGrid() {
   const { data: unassignedCollaboratorsData, isLoading: isLoadingUnassignedCollaborators, isError: isErrorUnassignedCollaborators } = useGetUnassignedCollaboratorsQuery();
   const { data: linesData, isLoading: isLoadingLines, isError: isErrorLines } = useGetLinesQuery();
   const { data: reportsData, isLoading: isLoadingReports, isError: isErrorReports } = useGetReportsQuery();
+  const totalCollaborators = isLoadingCollaborators ? '...' : isErrorCollaborators ? 'Erreur' : collaboratorsData.length.toString();
+  const totalInspections = isLoadingInspections ? '...' : isErrorInspections ? 'Erreur' : inspectionsData.length.toString();
 
   const dataList = [
     {
       title: 'Utilisateurs',
       value: isLoadingUsers ? '...' : isErrorUsers ? 'Erreur' : usersData.length.toString(),
-    },
-    {
-      title: 'Inspections',
-      value: isLoadingInspections ? '...' : isErrorInspections ? 'Erreur' : inspectionsData.length.toString(),
-    },
-    {
-      title: 'Inspections Terminées',
-      value: isLoadingInspectionsDone ? '...' : isErrorInspectionsDone ? 'Erreur' : inspectionsDoneData.length.toString(),
-    },
-    {
-      title: 'Inspections Programmées',
-      value: isLoadingInspectionsScheduled ? '...' : isErrorInspectionsScheduled ? 'Erreur' : inspectionsScheduledData.length.toString(),
-    },
-    {
-      title: 'Collaborateurs',
-      value: isLoadingCollaborators ? '...' : isErrorCollaborators ? 'Erreur' : collaboratorsData.length.toString(),
-    },
-    {
-      title: 'Collaborateurs Non Assignés',
-      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : unassignedCollaboratorsData.length.toString(),
+      link: '/users',
     },
     {
       title: 'Lignes',
       value: isLoadingLines ? '...' : isErrorLines ? 'Erreur' : linesData.length.toString(),
-    },
-    {
-      title: 'Rapports',
-      value: isLoadingReports ? '...' : isErrorReports ? 'Erreur' : reportsData.length.toString(),
+      link: '/lines',
     },
   ];
+  const collaboratorDataList = [
+    {
+      label: 'non assignés',
+      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (unassignedCollaboratorsData.length).toString(),
+    },
+    {
+      label: 'assignés',
+      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (totalCollaborators - unassignedCollaboratorsData.length).toString(),
+    },
+  ];
+  const inspectionDataList = [
+    {
+      label: 'programmées',
+      value: isLoadingInspectionsScheduled ? '...' : isErrorInspectionsScheduled ? 'Erreur' : (inspectionsScheduledData.length ).toString(),
+    },
+    {
+      label: 'terminées',
+      value: isLoadingInspectionsDone ? '...' : isErrorInspectionsDone ? 'Erreur' : (inspectionsDoneData.length ).toString(),
+    },
+  ];
+  const collaboratorFields = [
+    {
+      name: 'non assignés',
+      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (unassignedCollaboratorsData.length / totalCollaborators * 100).toString(),
+      icon: <ErrorRoundedIcon />,
+      color: 'red',
+    },
+    {
+      name: 'assignés',
+      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (( totalCollaborators - unassignedCollaboratorsData.length ) / totalCollaborators * 100).toString(),
+      icon: <CheckCircleRoundedIcon />,
+      color: 'green',
+    },
+  ];
+  const inspectionFields = [
+    {
+      name: 'programmées',
+      value: isLoadingInspectionsScheduled ? '...' : isErrorInspectionsScheduled ? 'Erreur' : (inspectionsScheduledData.length / totalInspections * 100).toString(),
+      icon: <HourglassBottomRoundedIcon />,
+      color: 'red',
+    },
+    {
+      name: 'terminées',
+      value: isLoadingInspectionsDone ? '...' : isErrorInspectionsDone ? 'Erreur' : (inspectionsDoneData.length / totalInspections * 100).toString(),
+      icon: <CheckCircleRoundedIcon />,
+      color: 'green',
+    },
+  ];
+  
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
       {/* cards */}
@@ -81,9 +112,16 @@ export default function MainGrid() {
             <StatCard {...card} />
           </Grid>
         ))}
-{/*         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-          <HighlightedCard />
-        </Grid> */}
+                <Grid size={{ xs: 12, lg: 3 }}>
+          <Stack gap={2} direction={{ xs: 'column', sm: 'row', lg: 'column' }}>
+            <ChartUserByCountry title="Colaborateurs" data={collaboratorDataList} fields={collaboratorFields} total={totalCollaborators} />
+          </Stack>
+        </Grid>
+         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+                    <Stack gap={2} direction={{ xs: 'column', sm: 'row', lg: 'column' }}>
+            <ChartUserByCountry title="Inspections" data={inspectionDataList} fields={inspectionFields} total={totalInspections} />
+          </Stack>
+        </Grid> 
 {/*         <Grid size={{ sm: 12, md: 6 }}>
           <SessionsChart />
         </Grid>
@@ -91,7 +129,7 @@ export default function MainGrid() {
           <PageViewsBarChart />
         </Grid> */}
       </Grid>
-      <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
+{/*       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         Details
       </Typography>
       <Grid container spacing={2} columns={12}>
@@ -103,7 +141,7 @@ export default function MainGrid() {
             <ChartUserByCountry />
           </Stack>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Copyright sx={{ my: 4 }} />
     </Box>
   );

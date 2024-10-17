@@ -22,6 +22,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+      invalidatesTags: ['User'],
     }),
     updateUser: builder.mutation({
       query: (data) => ({
@@ -29,18 +30,21 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data,
       }),
+      invalidatesTags: ['User'],
     }),
     getAllUsers: builder.query({
       query: () => ({
         url: `${USERS_URL}`,
         method: 'GET',
       }),
+      providesTags: ['User'],
     }),
     getUser: builder.query({
       query: (userId) => ({
         url: `${USERS_URL}/${userId}`,
         method: 'GET',
       }),
+      providesTags: ['User'],
     }),
     updateUserRole: builder.mutation({
       query: ({ userId, role }) => ({
@@ -48,12 +52,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: { role },
       }),
+      invalidatesTags: ['User'],
     }),
     deleteUser: builder.mutation({
       query: (userId) => ({
         url: `${USERS_URL}/${userId}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['User'],
     }),
   }),
 });

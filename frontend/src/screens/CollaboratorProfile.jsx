@@ -8,9 +8,11 @@ import {
   CardContent, 
   Alert,
   CircularProgress,
-  Divider 
+  Divider,
+  Chip
 } from '@mui/material';
 import { useGetCollaboratorQuery } from '../slices/collaboratorsApiSlice';
+import { Link } from 'react-router-dom';
 
 const ProfileField = ({ label, value }) => (
   <Box sx={{ mb: 2 }}>
@@ -18,7 +20,7 @@ const ProfileField = ({ label, value }) => (
       {label}
     </Typography>
     <Typography variant="body1" sx={{ mt: 1 }}>
-      {value || 'Not provided'}
+      {value || 'Non fourni'}
     </Typography>
     <Divider sx={{ mt: 2 }} />
   </Box>
@@ -43,21 +45,21 @@ const CollaboratorProfile = ({ collaboratorId }) => {
     return (
       <Box sx={{ p: 3 }}>
         <Alert severity="error">
-          {error?.data?.message || error?.error || 'Failed to load collaborator profile'}
+          {error?.data?.message || error?.error || 'Échec du chargement du profil du collaborateur'}
         </Alert>
       </Box>
     );
   }
 
   if (!collaborator) {
-    return <Alert severity="info">Collaborator not found</Alert>;
+    return <Alert severity="info">Collaborateur non trouvé</Alert>;
   }
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
+    <Box sx={{ p: 3, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+      <Paper elevation={3} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Typography variant="h4" gutterBottom>
-          Collaborator Profile
+          Profil du Collaborateur
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
           ID: {collaboratorId}
@@ -66,33 +68,40 @@ const CollaboratorProfile = ({ collaboratorId }) => {
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Card>
+          <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Basic Information
+                Informations de base
               </Typography>
-              <ProfileField label="Full Name" value={collaborator.fullName} />
-              <ProfileField label="Employee ID" value={collaborator.employeeId} />
-              <ProfileField label="Department" value={collaborator.department} />
-              <ProfileField label="Position" value={collaborator.position} />
+              <ProfileField label="Nom complet" value={collaborator.fullName} />
+              <ProfileField label="ID Employé" value={collaborator.employeeId} />
+              <ProfileField label="Département" value={collaborator.department} />
+              <ProfileField label="Poste" value={collaborator.position} />
             </CardContent>
           </Card>
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Assignment Information
+                Informations sur l'affectation
               </Typography>
               <ProfileField 
-                label="Assignment Status" 
-                value={collaborator.assignedInspector ? 'Assigned' : 'Unassigned'} 
+                label="Statut de l'affectation" 
+                value={collaborator.assignedInspector ? 'Affecté' : 'Non affecté'} 
               />
               {collaborator.assignedInspector && (
                 <ProfileField 
-                  label="Assigned Inspector" 
-                  value={collaborator.assignedInspector.name} 
+                  label="Inspecteur assigné" 
+                  value={
+                    <Chip 
+                      label={collaborator.assignedInspector.name} 
+                      component={Link} 
+                      to={`/details/user/${collaborator.assignedInspector._id}`} 
+                      clickable 
+                    />
+                  } 
                 />
               )}
             </CardContent>

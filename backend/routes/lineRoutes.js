@@ -20,7 +20,7 @@ router.route('/')
 router.route('/assign')
   .post(protect, authorize('inspector', 'admin'), assignCollaboratorToLine);
 
-router.route('/collaborator/:collaboratorId')
+router.route('/collaborator/:id')
   .get(protect, authorize('inspector', 'admin'), getLinesByCollaborator);
 
   router.route('/:id')

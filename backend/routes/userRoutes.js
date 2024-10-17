@@ -26,7 +26,7 @@ router.route('/')
   .get(protect, authorize('admin'), getUsers);
 
 router.route('/:id')
-  .get(protect, authorize('admin'), getUserById)
+  .get(protect, authorize('admin','inspector'), getUserById)
   .put(protect, authorize('admin'), updateUser)
   .delete(protect, authorize('admin'), deleteUser);
 

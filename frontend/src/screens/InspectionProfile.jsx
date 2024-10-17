@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Box, 
   Typography, 
@@ -8,10 +8,18 @@ import {
   CardContent, 
   Alert,
   CircularProgress,
-  Divider 
+  Divider,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Chip
 } from '@mui/material';
-import { useGetInspectionQuery } from '../slices/inspectionsApiSlice';
+import { useGetInspectionQuery, useDeleteInspectionMutation } from '../slices/inspectionsApiSlice';
 import InspectionReportButton from '../components/InspectionReportButton';
+import { useNavigate, Link } from 'react-router-dom';
 
 const ProfileField = ({ label, value }) => (
   <Box sx={{ mb: 2 }}>
@@ -31,6 +39,20 @@ const InspectionProfile = ({ inspectionId }) => {
     isLoading,
     error,
   } = useGetInspectionQuery(inspectionId);
+  const [deleteInspection] = useDeleteInspectionMutation();
+  const [open, setOpen] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    try {
+      await deleteInspection(inspectionId).unwrap();
+      setOpen(false);
+      navigate('/home');
+    } catch (err) {
+      setDeleteError(err?.data?.message || 'Échec de la suppression de l\'inspection');
+    }
+  };
 
   if (isLoading) {
     return (
@@ -55,8 +77,8 @@ const InspectionProfile = ({ inspectionId }) => {
   }
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
+    <Box sx={{ p: 3, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+      <Paper elevation={3} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Typography variant="h4" gutterBottom>
           Profil d'inspection
         </Typography>
@@ -67,13 +89,37 @@ const InspectionProfile = ({ inspectionId }) => {
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Card>
+          <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
                 Détails de l'inspection
               </Typography>
-              <ProfileField label="Inspecteur" value={inspection.inspector?.name} />
-              <ProfileField label="Collaborateur" value={inspection.collaborator?.fullName} />
+              <ProfileField 
+                label="Inspecteur" 
+                value={
+                  inspection.inspector ? (
+                    <Chip 
+                      label={inspection.inspector.name} 
+                      component={Link} 
+                      to={`/details/user/${inspection.inspector._id}`} 
+                      clickable 
+                    />
+                  ) : 'Non fourni'
+                } 
+              />
+              <ProfileField 
+                label="Collaborateur" 
+                value={
+                  inspection.collaborator ? (
+                    <Chip 
+                      label={inspection.collaborator.fullName} 
+                      component={Link} 
+                      to={`/details/collaborator/${inspection.collaborator._id}`} 
+                      clickable 
+                    />
+                  ) : 'Non fourni'
+                } 
+              />
               <ProfileField label="Ligne" value={inspection.line?.trainNumber} />
               <ProfileField 
                 label="Date et heure prévues" 
@@ -85,7 +131,7 @@ const InspectionProfile = ({ inspectionId }) => {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
                 Informations supplémentaires
@@ -102,16 +148,49 @@ const InspectionProfile = ({ inspectionId }) => {
           </Card>
         </Grid>
         <Grid item xs={12}>
-  <Card>
-    <CardContent>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h6">Rapport d'inspection</Typography>
-        <InspectionReportButton inspectionId={inspectionId} />
-      </Box>
-    </CardContent>
-  </Card>
-</Grid>
+          <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6">Rapport d'inspection</Typography>
+                <InspectionReportButton inspectionId={inspectionId} />
+                <Button variant="contained" color="error" onClick={() => setOpen(true)}>
+                  Supprimer
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
+
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirmer la suppression"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Êtes-vous sûr de vouloir supprimer cette inspection ? Cette action est irréversible.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="primary">
+            Annuler
+          </Button>
+          <Button onClick={handleDelete} color="error" autoFocus>
+            Supprimer
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {deleteError && (
+        <Box sx={{ p: 3 }}>
+          <Alert severity="error">
+            {deleteError}
+          </Alert>
+        </Box>
+      )}
     </Box>
   );
 };

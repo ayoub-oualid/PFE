@@ -54,8 +54,8 @@ const UserProfile = ({ userId }) => {
   }
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
+    <Box sx={{ p: 3, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+      <Paper elevation={3} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Typography variant="h4" gutterBottom>
           Profil Utilisateur
         </Typography>
@@ -66,7 +66,7 @@ const UserProfile = ({ userId }) => {
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Card>
+          <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
                 Informations de Base
@@ -83,14 +83,14 @@ const UserProfile = ({ userId }) => {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
                 Statut du Compte
               </Typography>
               <ProfileField 
                 label="Type de Compte" 
-                value={user.role === 'admin' ? 'Administrateur' : 'Utilisateur Régulier'} 
+                value={user.role === 'admin' ? 'Administrateur' : 'Inspecteur'} 
               />
               <ProfileField 
                 label="Dernière Mise à Jour" 

@@ -58,6 +58,10 @@ export default function SideMenu() {
           mt: 'calc(var(--template-frame-height, 0px) + 4px)',
           p: 1.5,
         }}
+        onClick={() => {
+          window.location.href = '/';
+        }
+        }
         />
 {/*         <SelectContent />
  */}      </Box>

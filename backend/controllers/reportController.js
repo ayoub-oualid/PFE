@@ -54,7 +54,7 @@ const getReports = asyncHandler(async (req, res) => {
     populate: [
       { path: 'inspector', select: 'name email' },
       { path: 'collaborator', select: 'fullName employeeId' },
-      { path: 'line', select: 'trainNumber' }
+      { path: 'line', select: 'trainNumber' },  
     ]
   });
   res.json(reports);
@@ -69,7 +69,7 @@ const getReportById = asyncHandler(async (req, res) => {
     populate: [
       { path: 'inspector', select: 'name email' },
       { path: 'collaborator', select: 'fullName employeeId' },
-      { path: 'line', select: 'trainNumber' }
+      { path: 'line', select: 'trainNumber' },
     ]
   });
 

@@ -31,6 +31,7 @@ const CreateInspectionModal = ({ open, onClose, collaboratorId }) => {
           line: selectedLine,
           plannedDateTime: selectedDateTime,
         });
+        
         onClose();
       } catch (error) {
         console.error('Failed to create inspection:', error);

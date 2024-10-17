@@ -48,7 +48,7 @@ function SideMenuMobile({ open, onClose }) {
           <OptionsMenu />
         </Stack>
         <Divider />
-        <MenuContent />
+        <MenuContent role={userInfo.role} />
       </Stack>
     </Drawer>
   );

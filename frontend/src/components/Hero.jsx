@@ -1,21 +1,8 @@
 import { Container, Card, Button, Typography, Box } from '@mui/material';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
 
-  const navigate = useNavigate();
-  const userInf= localStorage.getItem('userInfo');
-  const userRole = userInf ? JSON.parse(userInf).role : null;
-
-  useEffect(() => {
-    if (userRole === 'inspector') {
-      navigate('/home');
-    } else if (userRole === 'admin') {
-      navigate('/admin');
-    }
-  }, [userRole, navigate]);
-
+ 
 
   return (
     <Box py={5}>

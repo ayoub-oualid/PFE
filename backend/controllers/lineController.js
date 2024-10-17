@@ -1,5 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Line from '../models/lineModel.js';
+import Collaborator from '../models/collaboratorModel.js';
+import mongoose from 'mongoose';
 // @desc    Create a new line
 // @route   POST /api/lines
 // @access  Private/Admin
@@ -91,10 +93,23 @@ const deleteLine = asyncHandler(async (req, res) => {
 // @route   GET /api/lines/collaborator/:id
 // @access  Private
 const getLinesByCollaborator = asyncHandler(async (req, res) => {
-  const lines = await Line.find({ collaborators: req.params.id }).populate('collaborators', 'fullName employeeId');
+  const collaboratorId = req.params.id;
+
+  // Check if the collaborator exists
+  const collaboratorExists = await Collaborator.exists({ _id: collaboratorId });
+  if (!collaboratorExists) {
+    return res.status(404).json({ message: 'Collaborator not found' });
+  }
+
+  // Find all lines where the collaboratorId exists in the collaborators array
+  const lines = await Line.find({
+    collaborators: {
+      $elemMatch: { $eq: collaboratorId }
+    }
+  }).populate('collaborators'); // Optional: populate collaborator details
+
   res.json(lines);
 });
-
 // @desc    assign collaborator to line
 // @route   PUT /api/lines/:id/assign
 // @access  Private/Admin

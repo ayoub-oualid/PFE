@@ -30,6 +30,6 @@ router.route('/collaborator')
 router.route('/:id')
   .get(protect, getInspectionById)
   .put(protect, authorize('inspector', 'admin'), updateInspection)
-  .delete(protect, authorize('admin'), deleteInspection);
+  .delete(protect, authorize('admin', 'inspector'), deleteInspection);
 
 export default router;

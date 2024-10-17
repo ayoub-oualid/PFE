@@ -78,7 +78,7 @@ const deleteInspection = asyncHandler(async (req, res) => {
   const inspection = await Inspection.findById(req.params.id);
 
   if (inspection) {
-    await inspection.remove();
+    await Inspection.deleteOne({ _id: req.params.id });
     res.json({ message: 'Inspection removed' });
   } else {
     res.status(404);

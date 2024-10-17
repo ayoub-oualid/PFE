@@ -14,7 +14,7 @@ import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import FolderSharedRoundedIcon from '@mui/icons-material/FolderSharedRounded';
 import TrainRoundedIcon from '@mui/icons-material/TrainRounded';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const mainListItems = [
   { text: 'Accueil', icon: <HomeRoundedIcon />, link: '/admin' },
@@ -31,21 +31,21 @@ const secondaryListItems = [
 ];
 
 export default function MenuContent({ role }) {
+  const location = useLocation();
   const listItems = role === 'admin' ? mainListItems : secondaryListItems;
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
         {listItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton selected={index === 0} link={Link} to={item.link}>
+            <ListItemButton selected={location.pathname === item.link} component={Link} to={item.link}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
-             
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      
     </Stack>
   );
 }

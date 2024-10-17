@@ -11,7 +11,6 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import store from './store';
 import { Provider } from 'react-redux';
-import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen.jsx';
 import RegisterScreen from './screens/RegisterScreen.jsx';
 import ProfileScreen from './screens/ProfileScreen.jsx';
@@ -24,11 +23,16 @@ import InspectorDashboard from './screens/InspectorDashboard.jsx';
 import CollaboratorsByInspectorScreen from './screens/CollaboratorsByInspectorScreen.jsx';
 import LinesScreen from './screens/LinesScreen.jsx';
 import ProfileWrapper from './screens/ProfileWrapper.jsx';
+import ReportsScreen from './screens/reportsScreen.jsx';
+import MyReportsScreen from './screens/myReportsScreen.jsx';
+import RoleBasedRedirect from './components/RoleBasedRedirect.jsx';
+import HomeScreen from './screens/HomeScreen.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route index={true} path='/' element={<HomeScreen />} />
+      <Route index={true} path='/' element={<RoleBasedRedirect />} />
+      <Route path='/welcome' element={<HomeScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='' element={<PrivateRoute />}>
@@ -36,6 +40,7 @@ const router = createBrowserRouter(
         <Route path='/profile' element={<ProfileScreen />} />
         <Route path='/mycollaborators' element={<CollaboratorsByInspectorScreen />} />
         <Route path="/details/:type/:id" element={<ProfileWrapper />} />
+        <Route path='/myreports' element={<MyReportsScreen />} />
 
         
       </Route>
@@ -45,6 +50,7 @@ const router = createBrowserRouter(
         <Route path='/collaborators' element={<CollaboratorsScreen />} />
         <Route path='/lines' element={<LinesScreen />} />
         <Route path="/details/:type/:id" element={<ProfileWrapper />} />
+        <Route path='/reports' element={<ReportsScreen />} />
       </Route>
       
     </Route>

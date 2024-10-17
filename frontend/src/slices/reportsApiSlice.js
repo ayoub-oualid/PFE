@@ -1,5 +1,3 @@
-// reportsApiSlice.js
-import { get } from 'mongoose';
 import { apiSlice } from './apiSlice';
 const REPORTS_URL = '/api/reports';
 
@@ -10,12 +8,14 @@ export const reportsApiSlice = apiSlice.injectEndpoints({
         url: REPORTS_URL,
         method: 'GET',
       }),
+      providesTags: ['Report'],
     }),
     getReport: builder.query({
       query: (id) => ({
         url: `${REPORTS_URL}/${id}`,
         method: 'GET',
       }),
+      providesTags: ['Report'],
     }),
     createReport: builder.mutation({
       query: (data) => ({
@@ -23,6 +23,7 @@ export const reportsApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+      invalidatesTags: ['Report'],
     }),
     updateReport: builder.mutation({
       query: ({ id, ...data }) => ({
@@ -30,30 +31,35 @@ export const reportsApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data,
       }),
+      invalidatesTags: ['Report'],
     }),
     deleteReport: builder.mutation({
       query: (id) => ({
         url: `${REPORTS_URL}/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Report'],
     }),
     getReportsByInspector: builder.query({
       query: (inspectorId) => ({
         url: `${REPORTS_URL}/inspector?inspectorId=${inspectorId}`,
         method: 'GET',
       }),
+      providesTags: ['Report'],
     }),
     getReportsByCollaborator: builder.query({
       query: (collaboratorId) => ({
         url: `${REPORTS_URL}/collaborator?collaboratorId=${collaboratorId}`,
         method: 'GET',
       }),
+      providesTags: ['Report'],
     }),
     getReportsByInspection: builder.query({
       query: (inspectionId) => ({
         url: `${REPORTS_URL}/inspection?inspectionId=${inspectionId}`,
         method: 'GET',
       }),
+      providesTags: ['Report'],
     }),
   }),
 });
@@ -65,7 +71,7 @@ export const {
   useUpdateReportMutation,
   useDeleteReportMutation,
   useGetReportsByInspectorQuery,
-    useGetReportsByCollaboratorQuery,
-    useGetReportsByInspectionQuery,
-    useLazyGetReportsByInspectionQuery
+  useGetReportsByCollaboratorQuery,
+  useGetReportsByInspectionQuery,
+  useLazyGetReportsByInspectionQuery,
 } = reportsApiSlice;
