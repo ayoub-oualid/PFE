@@ -18,7 +18,7 @@ const ProfileField = ({ label, value }) => (
       {label}
     </Typography>
     <Typography variant="body1" sx={{ mt: 1 }}>
-      {value || 'Not provided'}
+      {value || 'Non fourni'}
     </Typography>
     <Divider sx={{ mt: 2 }} />
   </Box>
@@ -43,21 +43,21 @@ const UserProfile = ({ userId }) => {
     return (
       <Box sx={{ p: 3 }}>
         <Alert severity="error">
-          {error?.data?.message || error?.error || 'Failed to load user profile'}
+          {error?.data?.message || error?.error || 'Échec du chargement du profil utilisateur'}
         </Alert>
       </Box>
     );
   }
 
   if (!user) {
-    return <Alert severity="info">User not found</Alert>;
+    return <Alert severity="info">Utilisateur non trouvé</Alert>;
   }
 
   return (
     <Box sx={{ p: 3 }}>
       <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
         <Typography variant="h4" gutterBottom>
-          User Profile
+          Profil Utilisateur
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
           ID: {userId}
@@ -69,13 +69,13 @@ const UserProfile = ({ userId }) => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Basic Information
+                Informations de Base
               </Typography>
-              <ProfileField label="Name" value={user.name} />
+              <ProfileField label="Nom" value={user.name} />
               <ProfileField label="Email" value={user.email} />
-              <ProfileField label="Role" value={user.role} />
+              <ProfileField label="Rôle" value={user.role} />
               <ProfileField 
-                label="Member Since" 
+                label="Membre Depuis" 
                 value={new Date(user.createdAt).toLocaleDateString()} 
               />
             </CardContent>
@@ -86,14 +86,14 @@ const UserProfile = ({ userId }) => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Account Status
+                Statut du Compte
               </Typography>
               <ProfileField 
-                label="Account Type" 
-                value={user.role === 'admin' ? 'Administrator' : 'Regular User'} 
+                label="Type de Compte" 
+                value={user.role === 'admin' ? 'Administrateur' : 'Utilisateur Régulier'} 
               />
               <ProfileField 
-                label="Last Updated" 
+                label="Dernière Mise à Jour" 
                 value={new Date(user.updatedAt).toLocaleDateString()} 
               />
             </CardContent>

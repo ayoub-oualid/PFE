@@ -66,8 +66,8 @@ const InspectionCalendar = () => {
     return { style };
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading inspections.</p>;
+  if (isLoading) return <p>Chargement...</p>;
+  if (error) return <p>Erreur de chargement des inspections.</p>;
 
   return (
     <ThemeProvider theme={theme}>
@@ -79,6 +79,16 @@ const InspectionCalendar = () => {
         style={{ height: 800, width: 900, margin: 20, lineHeight: 2 }}
         eventPropGetter={eventStyleGetter}
         onSelectEvent={handleEventClick}
+        messages={{
+          next: "Suivant",
+          previous: "Précedent",
+          today: "Aujourd'hui",
+          month: "Moi",
+          week: "Semaine",
+          day: "Jour",
+          event:"Inspection",
+          time:"Heure",
+        }}
       />
     </ThemeProvider>
   );

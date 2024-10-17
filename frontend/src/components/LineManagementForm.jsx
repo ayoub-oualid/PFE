@@ -38,12 +38,12 @@ const LineManagementForm = ({ mode, line, onSubmit, onClose }) => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ p: 3 }}>
         <Typography variant="h6" gutterBottom>
-          {mode === 'create' ? 'Create New Line' : 'Edit Line'}
+          {mode === 'create' ? 'Créer une nouvelle ligne' : 'Modifier la ligne'}
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Train Number"
+              label="Numéro de train"
               value={trainNumber}
               onChange={(e) => setTrainNumber(e.target.value)}
               fullWidth
@@ -51,7 +51,7 @@ const LineManagementForm = ({ mode, line, onSubmit, onClose }) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <DateTimePicker
-              label="Date & Time"
+              label="Date et heure"
               value={dateTime}
               onChange={(newDate) => setDateTime(newDate)}
               renderInput={(params) => <TextField {...params} fullWidth />}
@@ -59,12 +59,12 @@ const LineManagementForm = ({ mode, line, onSubmit, onClose }) => {
           </Grid>
           <Grid item xs={12}>
             <FormControl fullWidth>
-              <InputLabel>Collaborators</InputLabel>
+              <InputLabel>Collaborateurs</InputLabel>
               <Select
                 multiple
                 value={collaborators}
                 onChange={handleCollaboratorChange}
-                label="Collaborators"
+                label="Collaborateurs"
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((value) => {
@@ -75,9 +75,9 @@ const LineManagementForm = ({ mode, line, onSubmit, onClose }) => {
                 )}
               >
                 {loadingCollaborators ? (
-                  <MenuItem value="" disabled>Loading...</MenuItem>
+                  <MenuItem value="" disabled>Chargement...</MenuItem>
                 ) : isError ? (
-                  <MenuItem value="" disabled>Error loading collaborators</MenuItem>
+                  <MenuItem value="" disabled>Erreur de chargement des collaborateurs</MenuItem>
                 ) : (
                   collaboratorOptions?.map((collab) => (
                     <MenuItem key={collab._id} value={collab._id}>
@@ -90,7 +90,7 @@ const LineManagementForm = ({ mode, line, onSubmit, onClose }) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="First Stop"
+              label="Premier arrêt"
               value={firstStop}
               onChange={(e) => setFirstStop(e.target.value)}
               fullWidth
@@ -98,7 +98,7 @@ const LineManagementForm = ({ mode, line, onSubmit, onClose }) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Last Stop"
+              label="Dernier arrêt"
               value={lastStop}
               onChange={(e) => setLastStop(e.target.value)}
               fullWidth
@@ -106,9 +106,9 @@ const LineManagementForm = ({ mode, line, onSubmit, onClose }) => {
           </Grid>
           <Grid item xs={12}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={onClose}>Annuler</Button>
               <Button variant="contained" color="primary" onClick={handleSubmit}>
-                {mode === 'create' ? 'Create' : 'Update'}
+                {mode === 'create' ? 'Créer' : 'Mettre à jour'}
               </Button>
             </Box>
           </Grid>

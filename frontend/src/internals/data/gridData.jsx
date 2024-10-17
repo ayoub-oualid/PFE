@@ -15,8 +15,6 @@ import { useLazyGetReportsByInspectionQuery } from "../../slices/reportsApiSlice
 import { useLazyGetInspectionsByCollaboratorQuery } from "../../slices/inspectionsApiSlice";
 import { useGetCollaboratorsByInspectorQuery } from "../../slices/collaboratorsApiSlice";
 
-
-
 function getDaysInMonth(month, year) {
   const date = new Date(year, month, 0);
   const monthName = date.toLocaleDateString('en-US', {
@@ -91,7 +89,7 @@ export const userColumns = [
   { field: 'name', headerName: 'Nom', flex: 1.5, minWidth: 120 },
   {
     field: 'role',
-    headerName: 'Role',
+    headerName: 'Rôle',
     flex: 0.5,
     minWidth: 80,
     renderCell: (params) => renderStatus(params.value),
@@ -104,7 +102,7 @@ export const userColumns = [
   },
   {
     field: 'inspectionCount',
-    headerName: 'inspections',
+    headerName: 'Inspections',
     headerAlign: 'right',
     align: 'right',
     flex: 1,
@@ -170,13 +168,13 @@ export const useTableRows = () => {
 };
 
 export const collaboratorColumns = [
-  { field: 'fullName', headerName: 'Full Name', flex: 1.5, minWidth: 120 },
-  { field: 'employeeId', headerName: 'Employee ID', flex: 1, minWidth: 100 },
-  { field: 'department', headerName: 'Department', flex: 1.5, minWidth: 150 },
-  { field: 'position', headerName: 'Position', flex: 1, minWidth: 120 },
+  { field: 'fullName', headerName: 'Nom Complet', flex: 1.5, minWidth: 120 },
+  { field: 'employeeId', headerName: 'ID Employé', flex: 1, minWidth: 100 },
+  { field: 'department', headerName: 'Département', flex: 1.5, minWidth: 150 },
+  { field: 'position', headerName: 'Poste', flex: 1, minWidth: 120 },
   {
     field: 'assignedInspector',
-    headerName: 'Assigned Inspector',
+    headerName: 'Inspecteur Assigné',
     flex: 1.5,
     minWidth: 150,
     renderCell: (params) => params.value.name,
@@ -208,32 +206,12 @@ export const useCollaboratorTableRows = () => {
     isError,
   };
 };
-//     trainNumber,
-//dateTime,
-//firstStop,
-//lastStop,
-//collaborators, this one is an array of objects
+
 export const lineColumns = [
-  { field: 'trainNumber', headerName: 'Train Number', flex: 1, minWidth: 120 },
-  { field: 'dateTime', headerName: 'Date Time', flex: 1, minWidth: 120 },
-  { field: 'firstStop', headerName: 'First Stop', flex: 1, minWidth: 120 },
-  { field: 'lastStop', headerName: 'Last Stop', flex: 1, minWidth: 120 },
-  /* {
-    field: 'collaborators',
-    headerName: 'Collaborators',
-    flex: 1.5,
-    minWidth: 150,
-    renderCell: (params) => (
-      <Box>
-        <List dense>
-          {params.value.map((collaborator, index) => (
-            <ListItem key={index}>
-              <ListItemText primary={collaborator.fullName} />
-            </ListItem>
-          ))}
-        </List>
-      </Box>)
-  }, */
+  { field: 'trainNumber', headerName: 'Numéro de Train', flex: 1, minWidth: 120 },
+  { field: 'dateTime', headerName: 'Date', flex: 1, minWidth: 120 },
+  { field: 'firstStop', headerName: 'Premier Arrêt', flex: 1, minWidth: 120 },
+  { field: 'lastStop', headerName: 'Dernier Arrêt', flex: 1, minWidth: 120 },
 ];
 
 export const useLineTableRows = () => {
@@ -245,7 +223,7 @@ export const useLineTableRows = () => {
     return linesData.map((line) => ({
       id: line._id,
       trainNumber: line.trainNumber,
-      dateTime: line.dateTime,
+      dateTime: new Date(line.dateTime).toLocaleDateString(),
       firstStop: line.firstStop,
       lastStop: line.lastStop,
       collaborators: line.collaborators,
@@ -264,9 +242,9 @@ export const useLineTableRows = () => {
 
 export const reportColumns = [
   { field: 'inspection', headerName: 'Inspection', flex: 1, minWidth: 120 },
-  { field: 'field1', headerName: 'Field 1', flex: 1, minWidth: 120 },
-  { field: 'field2', headerName: 'Field 2', flex: 1, minWidth: 120 },
-  { field: 'field3', headerName: 'Field 3', flex: 1, minWidth: 120 },
+  { field: 'field1', headerName: 'Champ 1', flex: 1, minWidth: 120 },
+  { field: 'field2', headerName: 'Champ 2', flex: 1, minWidth: 120 },
+  { field: 'field3', headerName: 'Champ 3', flex: 1, minWidth: 120 },
 ];
 
 export const useReportTableRows = () => {
@@ -295,21 +273,19 @@ export const useReportTableRows = () => {
 };
 
 export const inspectionColumns = [
-  { field: 'inspector', headerName: 'Inspector', flex: 1, minWidth: 120 },
-  { field: 'collaborator', headerName: 'Collaborator', flex: 1, minWidth: 120 },
-  { field: 'line', headerName: 'Line', flex: 1, minWidth: 120 },
-  { field: 'dateTime', headerName: 'Date Time', flex: 1, minWidth: 120 },
-  { field: 'status', headerName: 'Status', flex: 1, minWidth: 120 },
+  { field: 'inspector', headerName: 'Inspecteur', flex: 1, minWidth: 120 },
+  { field: 'collaborator', headerName: 'Collaborateur', flex: 1, minWidth: 120 },
+  { field: 'line', headerName: 'Ligne', flex: 1, minWidth: 120 },
+  { field: 'dateTime', headerName: 'Date et Heure', flex: 1, minWidth: 120 },
+  { field: 'status', headerName: 'Statut', flex: 1, minWidth: 120 },
   {
     field: 'report',
-    headerName: 'Report',
+    headerName: 'Rapport',
     flex: 1,
     minWidth: 120,
     renderCell: renderSparklineCell,
   },
 ];
-
-//the report can be retrieved with useLazyGetReportsByInspectionQuery with the inspection id
 
 export const useInspectionTableRow = () => {
   const { data: usersData, isLoading: isLoadingUsers, isError: isErrorUsers } = useGetAllUsersQuery();
@@ -368,12 +344,11 @@ export const useInspectionTableRow = () => {
   };
 };
 
-
 export const usersColumns = [
   { field: 'name', headerName: 'Nom', flex: 1.5, minWidth: 120 },
   {
     field: 'role',
-    headerName: 'Role',
+    headerName: 'Rôle',
     flex: 0.5,
     minWidth: 80,
     renderCell: (params) => renderStatus(params.value),
@@ -411,16 +386,15 @@ export const useUsersTableRows = () => {
 };
 
 export const collaboratorByInspectorColumns = [
-  { field: 'fullName', headerName: 'Full Name', flex: 1.5, minWidth: 120 },
-  { field: 'employeeId', headerName: 'Employee ID', flex: 1, minWidth: 100 },
-  { field: 'department', headerName: 'Department', flex: 1.5, minWidth: 150 },
-  { field: 'position', headerName: 'Position', flex: 1, minWidth: 120 },
+  { field: 'fullName', headerName: 'Nom Complet', flex: 1.5, minWidth: 120 },
+  { field: 'employeeId', headerName: 'ID Employé', flex: 1, minWidth: 100 },
+  { field: 'department', headerName: 'Département', flex: 1.5, minWidth: 150 },
+  { field: 'position', headerName: 'Poste', flex: 1, minWidth: 120 },
   {
     field: 'LastInspection',
-    headerName: 'Last Inspection',
+    headerName: 'Dernière Inspection',
     flex: 1.5,
     minWidth: 150,
-    // the last inspection can be retrieved with useLazyGetInspectionsByCollaboratorQuery with the collaborator id and take the last one from the array plannedDateTime
     renderCell: (params) => {
       return <span>{params.value}</span>;
     },
@@ -441,11 +415,11 @@ export const useCollaboratorsByInspectorTableRows = (inspectorId) => {
             const sortedInspections = response.data.sort((a, b) => new Date(b.plannedDateTime) - new Date(a.plannedDateTime));
             setInspectionsData((prevData) => ({
               ...prevData,
-              [collaborator._id]: sortedInspections[0]?.plannedDateTime || 'No inspections',
+              [collaborator._id]: sortedInspections[0]?.plannedDateTime || 'Pas d\'inspections',
             }));
           }
         } catch (error) {
-          console.error(`Error fetching inspections for collaborator ${collaborator._id}:`, error);
+          console.error(`Erreur lors de la récupération des inspections pour le collaborateur ${collaborator._id}:`, error);
         }
       });
     }
@@ -460,7 +434,7 @@ export const useCollaboratorsByInspectorTableRows = (inspectorId) => {
       employeeId: collaborator.employeeId,
       department: collaborator.department,
       position: collaborator.position,
-      LastInspection: new Date(inspectionsData[collaborator._id]).toLocaleDateString() || 'Loading...',
+      LastInspection: new Date(inspectionsData[collaborator._id]).toLocaleDateString() || 'Chargement...',
     }));
   }, [collaboratorsData, inspectionsData]);
 

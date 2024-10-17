@@ -17,17 +17,17 @@ import TrainRoundedIcon from '@mui/icons-material/TrainRounded';
 import { Link } from 'react-router-dom';
 
 const mainListItems = [
-  { text: 'Home', icon: <HomeRoundedIcon />, link: '/admin' },
-  { text: 'Lines', icon: <TrainRoundedIcon />, link: '/lines' },
-  { text: 'Reports', icon: <AssignmentRoundedIcon />, link: '/reports' },
-  { text: 'Users', icon: <PeopleRoundedIcon />, link: '/users' },
-  { text: 'Collaborators', icon: <FolderSharedRoundedIcon />, link: '/collaborators' },
+  { text: 'Accueil', icon: <HomeRoundedIcon />, link: '/admin' },
+  { text: 'Lignes', icon: <TrainRoundedIcon />, link: '/lines' },
+  { text: 'Rapports', icon: <AssignmentRoundedIcon />, link: '/reports' },
+  { text: 'Utilisateurs', icon: <PeopleRoundedIcon />, link: '/users' },
+  { text: 'Collaborateurs', icon: <FolderSharedRoundedIcon />, link: '/collaborators' },
 ];
 
 const secondaryListItems = [
-  { text: 'Home', icon: <HomeRoundedIcon />, link: '/home' },
-  { text: 'Reports', icon: <AssignmentRoundedIcon />, link: '/myReports' },
-  { text: 'Collaborators', icon: <FolderSharedRoundedIcon />, link: '/myCollaborators' },
+  { text: 'Accueil', icon: <HomeRoundedIcon />, link: '/home' },
+  { text: 'Rapports', icon: <AssignmentRoundedIcon />, link: '/myReports' },
+  { text: 'Collaborateurs', icon: <FolderSharedRoundedIcon />, link: '/myCollaborators' },
 ];
 
 export default function MenuContent({ role }) {

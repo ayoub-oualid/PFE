@@ -103,8 +103,14 @@ const updateReport = asyncHandler(async (req, res) => {
     report.field13 = req.body.field13 || report.field13;
     report.field14 = req.body.field14 || report.field14;
     report.field15 = req.body.field15 || report.field15;
+    const inspection = await Inspection.findById(report.inspection);
+    if (inspection) {
+      inspection.rating = (report.field1 + report.field2 + report.field3 + report.field4 + report.field5 + report.field6 + report.field7 + report.field8 + report.field9 + report.field10 + report.field11 + report.field12 + report.field13 + report.field14 + report.field15) / 15;
+      await inspection.save();
+    }
 
     const updatedReport = await report.save();
+
     res.json(updatedReport);
   } else {
     res.status(404);

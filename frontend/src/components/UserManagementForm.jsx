@@ -30,14 +30,14 @@ const UserManagementForm = ({ user, mode, onClose }) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error('Les mots de passe ne correspondent pas');
       return;
     }
 
     if (mode === 'create') {
       try {
         await register({ name, email, password, role }).unwrap();
-        toast.success('User created successfully');
+        toast.success('Utilisateur créé avec succès');
         onClose();
       } catch (err) {
         toast.error(err?.data?.message || err.error);
@@ -45,7 +45,7 @@ const UserManagementForm = ({ user, mode, onClose }) => {
     } else {
       try {
         const res = await updateUser({ id: user.id, name, email, password, role }).unwrap();
-        toast.success('User updated successfully');
+        toast.success('Utilisateur mis à jour avec succès');
         onClose();
       } catch (err) {
         toast.error(err?.data?.message || err.error);
@@ -64,7 +64,7 @@ const UserManagementForm = ({ user, mode, onClose }) => {
         }}
       >
         <Typography component="h1" variant="h5">
-          {mode === 'create' ? 'Create User' : 'Update User'}
+          {mode === 'create' ? 'Créer un utilisateur' : 'Mettre à jour l\'utilisateur'}
         </Typography>
         <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -72,7 +72,7 @@ const UserManagementForm = ({ user, mode, onClose }) => {
             required
             fullWidth
             id="name"
-            label="Name"
+            label="Nom"
             name="name"
             autoComplete="name"
             autoFocus
@@ -84,7 +84,7 @@ const UserManagementForm = ({ user, mode, onClose }) => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Adresse e-mail"
             name="email"
             autoComplete="email"
             value={email}
@@ -95,7 +95,7 @@ const UserManagementForm = ({ user, mode, onClose }) => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Mot de passe"
             type="password"
             id="password"
             autoComplete="new-password"
@@ -107,7 +107,7 @@ const UserManagementForm = ({ user, mode, onClose }) => {
             required
             fullWidth
             name="confirmPassword"
-            label="Confirm Password"
+            label="Confirmer le mot de passe"
             type="password"
             id="confirmPassword"
             autoComplete="new-password"
@@ -119,14 +119,14 @@ const UserManagementForm = ({ user, mode, onClose }) => {
             required
             fullWidth
             name="role"
-            label="Role"
+            label="Rôle"
             select
             id="role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
-            <MenuItem value="inspector">Inspector</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="inspector">Inspecteur</MenuItem>
+            <MenuItem value="admin">Administrateur</MenuItem>
           </TextField>
           <Button
             type="submit"
@@ -134,14 +134,14 @@ const UserManagementForm = ({ user, mode, onClose }) => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            {mode === 'create' ? 'Create' : 'Update'}
+            {mode === 'create' ? 'Créer' : 'Mettre à jour'}
           </Button>
           {isLoading && <Loader />}
         </Box>
         <Grid container justifyContent="flex-end">
           <Grid item>
             <Button onClick={onClose} variant="text">
-              Cancel
+              Annuler
             </Button>
           </Grid>
         </Grid>

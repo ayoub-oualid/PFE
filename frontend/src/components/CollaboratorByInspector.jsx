@@ -67,7 +67,7 @@ function CollaboratorByInspector() {
 
       handleCloseModal();
     } catch (err) {
-      setError(err.data?.message || 'An error occurred while saving');
+      setError(err.data?.message || 'Une erreur est survenue lors de l\'enregistrement');
       console.error('Failed to save collaborator:', err);
     }
   };
@@ -83,7 +83,7 @@ function CollaboratorByInspector() {
     sortable: false,
     renderCell: (params) => (
       <Box display="flex" gap={1}>
-        <Tooltip title="Edit Collaborator">
+        <Tooltip title="Modifier le collaborateur">
           <IconButton 
             size="small" 
             color="primary" 
@@ -95,7 +95,7 @@ function CollaboratorByInspector() {
             <EditIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="View Details">
+        <Tooltip title="Voir les détails">
           <IconButton 
             size="small" 
             color="secondary" 
@@ -116,14 +116,14 @@ function CollaboratorByInspector() {
 
   if (isLoading) return (
     <Box display="flex" justifyContent="center" alignItems="center" height="400px">
-      <Typography>Loading collaborators...</Typography>
+      <Typography>Chargement des collaborateurs...</Typography>
     </Box>
   );
 
   if (isError) return (
     <Box display="flex" justifyContent="center" alignItems="center" height="400px" gap={2}>
       <WarningIcon color="error" />
-      <Typography color="error">Error loading collaborators</Typography>
+      <Typography color="error">Erreur de chargement des collaborateurs</Typography>
     </Box>
   );
 
@@ -131,7 +131,7 @@ function CollaboratorByInspector() {
     <Box sx={{ height: '80vh', width: '100%', p: 2 }}>
       <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h5" component="h1">
-          Collaborators Management
+          Gestion des collaborateurs
         </Typography>
         <Button
           variant="contained"
@@ -139,7 +139,7 @@ function CollaboratorByInspector() {
           startIcon={<AddIcon />}
           onClick={() => handleOpenModal('create')}
         >
-          Add Collaborator
+          Ajouter un collaborateur
         </Button>
       </Box>
       
@@ -151,7 +151,7 @@ function CollaboratorByInspector() {
           Toolbar: GridToolbar,
           NoRowsOverlay: () => (
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-              <Typography>No collaborators found</Typography>
+              <Typography>Aucun collaborateur trouvé</Typography>
             </Box>
           ),
         }}
@@ -250,7 +250,7 @@ function CollaboratorFormDialog({ open, onClose, mode, inspectorId, collaborator
       }}
     >
       <DialogTitle>
-        {mode === 'create' ? 'Add New Collaborator' : 'Edit Collaborator'}
+        {mode === 'create' ? 'Ajouter un nouveau collaborateur' : 'Modifier le collaborateur'}
       </DialogTitle>
       <DialogContent dividers>
         {error && (
@@ -262,12 +262,12 @@ function CollaboratorFormDialog({ open, onClose, mode, inspectorId, collaborator
         <TextField
           select
           fullWidth
-          label="Line"
+          label="Ligne"
           value={selectedLine}
           onChange={(e) => setSelectedLine(e.target.value)}
           margin="normal"
           disabled={isLoadingLines || isSubmitting}
-          helperText={isLoadingLines ? 'Loading lines...' : ''}
+          helperText={isLoadingLines ? 'Chargement des lignes...' : ''}
         >
           {lines.map((line) => (
             <MenuItem key={line._id} value={line._id}>
@@ -278,7 +278,7 @@ function CollaboratorFormDialog({ open, onClose, mode, inspectorId, collaborator
         
         <TextField
           fullWidth
-          label="Planned Date and Time"
+          label="Date et heure prévues"
           type="datetime-local"
           value={selectedDateTime}
           onChange={(e) => setSelectedDateTime(e.target.value)}
@@ -297,14 +297,14 @@ function CollaboratorFormDialog({ open, onClose, mode, inspectorId, collaborator
           onClick={onClose} 
           disabled={isSubmitting}
         >
-          Cancel
+          Annuler
         </Button>
         <Button 
           onClick={handleSubmit} 
           variant="contained" 
           disabled={isSubmitting || !selectedLine || !selectedDateTime}
         >
-          {isSubmitting ? 'Saving...' : mode === 'create' ? 'Add' : 'Save'}
+          {isSubmitting ? 'Enregistrement...' : mode === 'create' ? 'Ajouter' : 'Enregistrer'}
         </Button>
       </DialogActions>
     </Dialog>

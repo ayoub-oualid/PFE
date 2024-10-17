@@ -58,7 +58,7 @@ function LineManagement() {
     width: 120,
     renderCell: (params) => (
       <Box>
-        <Tooltip title="Edit Line">
+        <Tooltip title="Modifier la ligne">
           <IconButton 
             size="small" 
             color="primary" 
@@ -73,7 +73,7 @@ function LineManagement() {
 
   const collaboratorsColumn = {
     field: 'collaborators',
-    headerName: 'Collaborators',
+    headerName: 'Collaborateurs',
     width: 200,
     renderCell: (params) => (
 
@@ -87,14 +87,14 @@ function LineManagement() {
 
   const enhancedColumns = [...lineColumns, collaboratorsColumn, actionColumn];
 
-  if (isLoading) return <Typography variant="h6">Loading...</Typography>;
-  if (isError) return <Typography variant="h6" color="error">Error loading lines</Typography>;
+  if (isLoading) return <Typography variant="h6">Chargement...</Typography>;
+  if (isError) return <Typography variant="h6" color="error">Erreur de chargement des lignes</Typography>;
 
   return (
     <Box sx={{ height: '80%', width: '100%' }}>
       <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h5" component="h1">
-          Line Management
+          Gestion des lignes
         </Typography>
         <Button
           variant="contained"
@@ -102,7 +102,7 @@ function LineManagement() {
           startIcon={<AddIcon />}
           onClick={() => handleOpenModal('create')}
         >
-          Add Line
+          Ajouter une ligne
         </Button>
       </Box>
       

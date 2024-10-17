@@ -60,7 +60,7 @@ function CollaboratorManagement() {
       }
       handleCloseModal();
     } catch (err) {
-      setError('An error occurred while saving');
+      setError('Une erreur est survenue lors de l\'enregistrement');
     }
   };
 
@@ -70,7 +70,7 @@ function CollaboratorManagement() {
     width: 120,
     renderCell: (params) => (
       <Box display="flex" gap={1}>
-        <Tooltip title="Edit Collaborator">
+        <Tooltip title="Modifier le collaborateur">
           <IconButton 
             size="small" 
             color="primary" 
@@ -79,7 +79,7 @@ function CollaboratorManagement() {
             <EditIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="View Details">
+        <Tooltip title="Voir les détails">
           <IconButton 
             size="small" 
             color="secondary" 
@@ -100,14 +100,14 @@ function CollaboratorManagement() {
 
   if (isLoading) return (
     <Box display="flex" justifyContent="center" alignItems="center" height="400px">
-      <Typography>Loading collaborators...</Typography>
+      <Typography>Chargement des collaborateurs...</Typography>
     </Box>
   );
 
   if (isError) return (
     <Box display="flex" justifyContent="center" alignItems="center" height="400px" gap={2}>
       <WarningIcon color="error" />
-      <Typography color="error">Error loading collaborators</Typography>
+      <Typography color="error">Erreur de chargement des collaborateurs</Typography>
     </Box>
   );
 
@@ -115,7 +115,7 @@ function CollaboratorManagement() {
     <Box sx={{ height: '80vh', width: '100%', p: 2 }}>
       <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h5" component="h1">
-          Collaborator Management
+          Gestion des collaborateurs
         </Typography>
         <Button
           variant="contained"
@@ -123,7 +123,7 @@ function CollaboratorManagement() {
           startIcon={<AddIcon />}
           onClick={() => handleOpenModal('create')}
         >
-          Add Collaborator
+          Ajouter un collaborateur
         </Button>
       </Box>
       
@@ -135,7 +135,7 @@ function CollaboratorManagement() {
           Toolbar: GridToolbar,
           NoRowsOverlay: () => (
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-              <Typography>No collaborators found</Typography>
+              <Typography>Aucun collaborateur trouvé</Typography>
             </Box>
           ),
         }}
@@ -179,7 +179,7 @@ function CollaboratorManagement() {
 function CollaboratorFormDialog({ open, onClose, mode, collaborator, onSubmit, error }) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{mode === 'create' ? 'Add New Collaborator' : 'Edit Collaborator'}</DialogTitle>
+      <DialogTitle>{mode === 'create' ? 'Ajouter un nouveau collaborateur' : 'Modifier le collaborateur'}</DialogTitle>
       <DialogContent dividers>
         {error && (
           <Typography color="error" sx={{ mb: 2 }}>

@@ -65,8 +65,8 @@ function UserManagement() {
     headerName: 'Actions',
     width: 150,
     renderCell: (params) => (
-<Box display="flex" gap={1}>
-        <Tooltip title="Edit Collaborator">
+      <Box display="flex" gap={1}>
+        <Tooltip title="Modifier Collaborateur">
           <IconButton 
             size="small" 
             color="primary" 
@@ -75,14 +75,13 @@ function UserManagement() {
             <EditIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="View Details">
+        <Tooltip title="Voir les détails">
           <IconButton 
             size="small" 
             color="secondary" 
             onClick={(e) => {
               e.stopPropagation();
               navigateToDetails(params.row.id);
-
             }}
           >
             <PersonIcon />
@@ -94,14 +93,14 @@ function UserManagement() {
 
   const enhancedColumns = [...usersColumns, actionColumn];
 
-  if (isLoading) return <Typography>Loading...</Typography>;
-  if (isError) return <Typography>Error loading users</Typography>;
+  if (isLoading) return <Typography>Chargement...</Typography>;
+  if (isError) return <Typography>Erreur de chargement des utilisateurs</Typography>;
 
   return (
     <Box sx={{ height: '80%', width: '100%', mt: 2, mb: 2, p: 2 }}>
       <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h5" component="h1">
-          User Management
+          Gestion des utilisateurs
         </Typography>
         <Button
           variant="contained"
@@ -109,7 +108,7 @@ function UserManagement() {
           startIcon={<AddIcon />}
           onClick={() => handleOpenModal('create')}
         >
-          Add User
+          Ajouter un utilisateur
         </Button>
       </Box>
       
@@ -121,7 +120,7 @@ function UserManagement() {
           Toolbar: GridToolbar,
           NoRowsOverlay: () => (
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-              <Typography>No users found</Typography>
+              <Typography>Aucun utilisateur trouvé</Typography>
             </Box>
           ),
         }}

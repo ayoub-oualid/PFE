@@ -25,7 +25,7 @@ const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit, }) 
     e.preventDefault();
     try {
       await onSubmit({ fullName, employeeId, department, position, assignedInspector });
-      toast.success(`Collaborator ${mode === 'create' ? 'created' : 'updated'} successfully`);
+      toast.success(`Collaborateur ${mode === 'create' ? 'créé' : 'mis à jour'} avec succès`);
       onClose();
     } catch (err) {
       toast.error(err?.data?.message || err.error);
@@ -49,7 +49,7 @@ const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit, }) 
             required
             fullWidth
             id="fullName"
-            label="Full Name"
+            label="Nom Complet"
             name="fullName"
             autoComplete="name"
             autoFocus
@@ -61,7 +61,7 @@ const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit, }) 
             required
             fullWidth
             id="employeeId"
-            label="Employee ID"
+            label="ID Employé"
             name="employeeId"
             value={employeeId}
             onChange={(e) => setEmployeeId(e.target.value)}
@@ -71,7 +71,7 @@ const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit, }) 
             required
             fullWidth
             id="department"
-            label="Department"
+            label="Département"
             name="department"
             value={department}
             onChange={(e) => setDepartment(e.target.value)}
@@ -81,22 +81,22 @@ const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit, }) 
             required
             fullWidth
             id="position"
-            label="Position"
+            label="Poste"
             name="position"
             value={position}
             onChange={(e) => setPosition(e.target.value)}
           />
           <FormControl fullWidth margin="normal">
-            <InputLabel id="assigned-inspector-label">Assigned Inspector</InputLabel>
+            <InputLabel id="assigned-inspector-label">Inspecteur Assigné</InputLabel>
             <Select
               labelId="assigned-inspector-label"
               id="assignedInspector"
               value={assignedInspector}
-              label="Assigned Inspector"
+              label="Inspecteur Assigné"
               onChange={(e) => setAssignedInspector(e.target.value)}
             >
               <MenuItem value="">
-                <em>None</em>
+                <em>Aucun</em>
               </MenuItem>
               {users.map((user) => (
                 <MenuItem key={user._id} value={user._id}>
@@ -111,13 +111,13 @@ const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit, }) 
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            {mode === 'create' ? 'Create' : 'Update'}
+            {mode === 'create' ? 'Créer' : 'Mettre à jour'}
           </Button>
         </Box>
         <Grid container justifyContent="flex-end">
           <Grid item>
             <Button onClick={onClose} variant="text">
-              Cancel
+              Annuler
             </Button>
           </Grid>
         </Grid>

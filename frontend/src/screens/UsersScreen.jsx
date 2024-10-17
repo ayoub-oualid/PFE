@@ -16,7 +16,7 @@ const UsersScreen = () => {
         
         <AppNavbar />
         <SideMenu />
-        {/* Main content */}
+        {/* Contenu principal */}
         <Box
           component="main"
           sx={(theme) => ({

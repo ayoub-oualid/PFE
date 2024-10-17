@@ -40,11 +40,11 @@ const CreateInspectionModal = ({ open, onClose, collaboratorId }) => {
   
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Create Inspection</DialogTitle>
+      <DialogTitle>Créer une Inspection</DialogTitle>
       <DialogContent>
         <TextField
           select
-          label="Select Line"
+          label="Sélectionner la Ligne"
           fullWidth
           margin="normal"
           value={selectedLine}
@@ -57,7 +57,7 @@ const CreateInspectionModal = ({ open, onClose, collaboratorId }) => {
           ))}
         </TextField>
         <DateTimePicker
-          label="Select Date and Time"
+          label="Sélectionner la Date et l'Heure"
           value={selectedDateTime}
           onChange={setSelectedDateTime}
           renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
@@ -65,10 +65,10 @@ const CreateInspectionModal = ({ open, onClose, collaboratorId }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="secondary">
-          Cancel
+          Annuler
         </Button>
         <Button onClick={handleSubmit} color="primary" variant="contained">
-          Create
+          Créer
         </Button>
       </DialogActions>
     </Dialog>
