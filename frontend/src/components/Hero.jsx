@@ -1,4 +1,5 @@
 import { Container, Card, Button, Typography, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
 
@@ -15,9 +16,11 @@ const Hero = () => {
           Bienvenue sur la plateforme d'inspection ONCF, une application interne réservée aux employés de l'ONCF. Accédez à un espace sécurisé pour planifier et suivre les inspections ferroviaires, ainsi que gérer les rapports. Connectez-vous pour commencer.
           </Typography>
           <Box>
-            <Button variant="contained" color="primary" href="/login" sx={{ mr: 2 }}>
+            <Link to="/login" style={{ textDecoration: 'none' }}>
+            <Button variant="contained" color="primary" sx={{ mr: 2 }}>
               Connecter
             </Button>
+            </Link>
           </Box>
         </Card>
       </Container>
