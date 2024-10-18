@@ -15,6 +15,7 @@ import { useLazyGetReportsByInspectionQuery } from "../../slices/reportsApiSlice
 import { useLazyGetInspectionsByCollaboratorQuery } from "../../slices/inspectionsApiSlice";
 import { useGetCollaboratorsByInspectorQuery } from "../../slices/collaboratorsApiSlice";
 import { useGetReportsByInspectorQuery } from "../../slices/reportsApiSlice";
+import { useNavigate } from "react-router-dom";
 
 function getDaysInMonth(month, year) {
   const date = new Date(year, month, 0);
@@ -178,7 +179,20 @@ export const collaboratorColumns = [
     headerName: 'Inspecteur Assigné',
     flex: 1.5,
     minWidth: 150,
-    renderCell: (params) => params.value.name,
+    renderCell: (params) => {
+      const navigate = useNavigate();
+      const handleClick = () => {
+        navigate(`/details/user/${params.value._id}`);
+      };
+  
+      return (
+        <Chip
+          label={params.value.name}
+          onClick={handleClick}
+          clickable
+        />
+      );
+  },
   },
 ];
 

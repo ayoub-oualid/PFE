@@ -116,11 +116,8 @@ function ReportsManagement( {canEdit = true , inspectorId}) {
       valueGetter: (params) => params?.row?.inspection?.line?.trainNumber || '',
       renderCell: (params) => (
         params?.row?.inspection?.line?.trainNumber ? (
-          <Chip
-            label={params.row.inspection.line.trainNumber}
-            color="info"
-            variant="outlined"
-          />
+          params.row.inspection.line.trainNumber
+
         ) : null
       ),
     },
