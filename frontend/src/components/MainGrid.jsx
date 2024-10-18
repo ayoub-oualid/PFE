@@ -49,33 +49,33 @@ export default function MainGrid() {
   const collaboratorDataList = [
     {
       label: 'non assignés',
-      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (unassignedCollaboratorsData.length).toString(),
+      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (unassignedCollaboratorsData.length),
     },
     {
       label: 'assignés',
-      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (totalCollaborators - unassignedCollaboratorsData.length).toString(),
+      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (totalCollaborators - unassignedCollaboratorsData.length),
     },
   ];
   const inspectionDataList = [
     {
       label: 'programmées',
-      value: isLoadingInspectionsScheduled ? '...' : isErrorInspectionsScheduled ? 'Erreur' : (inspectionsScheduledData.length ).toString(),
+      value: isLoadingInspectionsScheduled ? '...' : isErrorInspectionsScheduled ? 'Erreur' : (inspectionsScheduledData.length ),
     },
     {
       label: 'terminées',
-      value: isLoadingInspectionsDone ? '...' : isErrorInspectionsDone ? 'Erreur' : (inspectionsDoneData.length ).toString(),
+      value: isLoadingInspectionsDone ? '...' : isErrorInspectionsDone ? 'Erreur' : (inspectionsDoneData.length ),
     },
   ];
   const collaboratorFields = [
     {
       name: 'non assignés',
-      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (unassignedCollaboratorsData.length / totalCollaborators * 100).toString(),
+      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (unassignedCollaboratorsData.length / totalCollaborators * 100),
       icon: <ErrorRoundedIcon />,
       color: 'red',
     },
     {
       name: 'assignés',
-      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (( totalCollaborators - unassignedCollaboratorsData.length ) / totalCollaborators * 100).toString(),
+      value: isLoadingUnassignedCollaborators ? '...' : isErrorUnassignedCollaborators ? 'Erreur' : (( totalCollaborators - unassignedCollaboratorsData.length ) / totalCollaborators * 100),
       icon: <CheckCircleRoundedIcon />,
       color: 'green',
     },
@@ -83,13 +83,13 @@ export default function MainGrid() {
   const inspectionFields = [
     {
       name: 'programmées',
-      value: isLoadingInspectionsScheduled ? '...' : isErrorInspectionsScheduled ? 'Erreur' : (inspectionsScheduledData.length / totalInspections * 100).toString(),
+      value: isLoadingInspectionsScheduled ? '...' : isErrorInspectionsScheduled ? 'Erreur' : (inspectionsScheduledData.length / totalInspections * 100),
       icon: <HourglassBottomRoundedIcon />,
       color: 'red',
     },
     {
       name: 'terminées',
-      value: isLoadingInspectionsDone ? '...' : isErrorInspectionsDone ? 'Erreur' : (inspectionsDoneData.length / totalInspections * 100).toString(),
+      value: isLoadingInspectionsDone ? '...' : isErrorInspectionsDone ? 'Erreur' : (inspectionsDoneData.length / totalInspections * 100),
       icon: <CheckCircleRoundedIcon />,
       color: 'green',
     },

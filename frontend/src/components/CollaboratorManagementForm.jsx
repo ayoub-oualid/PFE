@@ -1,30 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Box, Typography, Container, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { TextField, Button, Box, Container, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useGetAllUsersQuery } from '../slices/usersApiSlice';
+import { useUnassignCollaboratorMutation } from '../slices/collaboratorsApiSlice';
 import Loader from './Loader';
 
-const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit, }) => {
+const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit }) => {
   const [fullName, setFullName] = useState(collaborator?.fullName || '');
   const [employeeId, setEmployeeId] = useState(collaborator?.employeeId || '');
   const [department, setDepartment] = useState(collaborator?.department || '');
   const [position, setPosition] = useState(collaborator?.position || '');
   const [assignedInspector, setAssignedInspector] = useState(collaborator?.assignedInspector || '');
   const users = useGetAllUsersQuery().data || [];
+  const [unassignCollaborator] = useUnassignCollaboratorMutation();
+
   useEffect(() => {
     if (collaborator) {
       setFullName(collaborator.fullName);
       setEmployeeId(collaborator.employeeId);
       setDepartment(collaborator.department);
       setPosition(collaborator.position);
-      setAssignedInspector(collaborator.assignedInspector);
+      setAssignedInspector(collaborator.assignedInspector || '');
     }
   }, [collaborator]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await onSubmit({ fullName, employeeId, department, position, assignedInspector });
+      const collaboratorData = { fullName, employeeId, department, position };
+      if (assignedInspector == "") {
+        console.log('unassigning collaborator', collaborator.id);
+        await onSubmit(collaboratorData);
+        await unassignCollaborator({  id: collaborator.id, ...collaboratorData  });
+      } else {
+
+        collaboratorData.assignedInspector = assignedInspector;
+        await onSubmit(collaboratorData);
+      }
       toast.success(`Collaborateur ${mode === 'create' ? 'créé' : 'mis à jour'} avec succès`);
       onClose();
     } catch (err) {
@@ -42,7 +54,6 @@ const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit, }) 
           alignItems: 'center',
         }}
       >
-
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -93,7 +104,7 @@ const CollaboratorManagementForm = ({ collaborator, mode, onClose, onSubmit, }) 
               id="assignedInspector"
               value={assignedInspector}
               label="Inspecteur Assigné"
-              onChange={(e) => setAssignedInspector(e.target.value)}
+              onChange={(e) => setAssignedInspector(e.target.value === "" ? "" : e.target.value)}
             >
               <MenuItem value="">
                 <em>Aucun</em>

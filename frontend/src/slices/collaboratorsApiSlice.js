@@ -28,9 +28,9 @@ export const collaboratorsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['Collaborator'],
     }),
     unassignCollaborator: builder.mutation({
-      query: (data) => ({
-        url: `${COLLABORATORS_URL}/unassign`,
-        method: 'POST',
+      query: ({ id, ...data} ) => ({
+        url: `${COLLABORATORS_URL}/${id}/unassign`,
+        method: 'PUT',
         body: data,
       }),
       invalidatesTags: ['Collaborator'],

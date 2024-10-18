@@ -72,10 +72,10 @@ PieCenterLabel.propTypes = {
 };
 
 const colors = [
-  'hsl(220, 20%, 65%)',
-  'hsl(220, 20%, 42%)',
-  'hsl(220, 20%, 35%)',
-  'hsl(220, 20%, 25%)',
+  'hsl(30, 90%, 80%)',
+  'hsl(30, 100%, 50%)',
+  'hsl(30, 90%, 40%)',
+
 ];
 
 export default function ChartUserByCountry({title, data, fields, total}) {
@@ -135,13 +135,13 @@ export default function ChartUserByCountry({title, data, fields, total}) {
                   {field.name}
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {field.value}%
+                  {Number(field.value).toFixed(2)}%
                 </Typography>
               </Stack>
               <LinearProgress
                 variant="determinate"
                 aria-label={"Nombre de " + {title}}
-                value={field.value}
+                value={Number(field.value)}
                 sx={{
                   [`& .${linearProgressClasses.bar}`]: {
                     backgroundColor: field.color,

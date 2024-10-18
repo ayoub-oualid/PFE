@@ -188,11 +188,17 @@ export const collaboratorColumns = [
       return (
         <Chip
           label={params.value.name}
-          onClick={handleClick}
-          clickable
+          onClick={params.value._id ? handleClick : undefined}
+          clickable={!!params.value._id}
+          color={params.value._id ? 'default' : 'error'}
         />
       );
-  },
+    },
+    sortComparator: (v1, v2) => {
+      const name1 = v1.name === 'Non assigné' ? '' : v1.name;
+      const name2 = v2.name === 'Non assigné' ? '' : v2.name;
+      return name1.localeCompare(name2);
+    },
   },
 ];
 
@@ -208,7 +214,7 @@ export const useCollaboratorTableRows = () => {
       employeeId: collaborator.employeeId,
       department: collaborator.department,
       position: collaborator.position,
-      assignedInspector: collaborator.assignedInspector,
+      assignedInspector: collaborator.assignedInspector?.name ? collaborator.assignedInspector : { name: 'Non assigné', _id: null },
     }));
   }, [collaboratorsData]);
 

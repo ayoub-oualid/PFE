@@ -21,9 +21,9 @@ router.route('/')
   router.route('/assign')
   .post(protect, authorize('inspector', 'admin'), assignCollaborator);
 
-router.route('/unassign')
-  .post(protect, authorize('inspector', 'admin'), unassignCollaborator);
-
+  router.route('/:id/unassign')
+  .put(protect, authorize('admin'), unassignCollaborator);
+  
 router.route('/inspector/:inspectorId')
   .get(protect, authorize('inspector', 'admin'), getCollaboratorsByInspector);
 
