@@ -3,7 +3,6 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import { useEffect, useState } from 'react';
-import { Box, IconButton, Typography, Collapse, List, ListItem, ListItemText } from '@mui/material';
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 import { useGetAllUsersQuery } from "../../slices/usersApiSlice";
 import { useLazyGetCollaboratorsByInspectorQuery, } from "../../slices/collaboratorsApiSlice";

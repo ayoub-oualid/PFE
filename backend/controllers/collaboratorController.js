@@ -5,7 +5,7 @@ import Collaborator from '../models/collaboratorModel.js';
 // @route   POST /api/collaborators
 // @access  Private/Admin
 const createCollaborator = asyncHandler(async (req, res) => {
-  const { fullName, employeeId, department, position } = req.body;
+  const { fullName, employeeId, department, position, assignedInspector } = req.body;
 
   const collaboratorExists = await Collaborator.findOne({ employeeId });
 
@@ -19,7 +19,7 @@ const createCollaborator = asyncHandler(async (req, res) => {
     employeeId,
     department,
     position,
-    assignedInspector: req.user._id,
+    assignedInspector,
   });
 
   if (collaborator) {
@@ -58,13 +58,16 @@ const getCollaboratorById = asyncHandler(async (req, res) => {
 const updateCollaborator = asyncHandler(async (req, res) => {
   const collaborator = await Collaborator.findById(req.params.id);
 
-  if (collaborator) {
-    collaborator.fullName = req.body.fullName || collaborator.fullName;
-    collaborator.employeeId = req.body.employeeId || collaborator.employeeId;
-    collaborator.department = req.body.department || collaborator.department;
-    collaborator.position = req.body.position || collaborator.position;
+if (collaborator) {
+  collaborator.fullName = req.body.fullName || collaborator.fullName;
+  collaborator.employeeId = req.body.employeeId || collaborator.employeeId;
+  collaborator.department = req.body.department || collaborator.department;
+  collaborator.position = req.body.position || collaborator.position;
+  if (req.body.assignedInspector === null && collaborator.assignedInspector) {
+    collaborator.assignedInspector = null;
+  } else {
     collaborator.assignedInspector = req.body.assignedInspector || collaborator.assignedInspector;
-
+  }
     const updatedCollaborator = await collaborator.save();
     res.json(updatedCollaborator);
   } else {
